@@ -1,25 +1,34 @@
 import logo from './logo.svg';
-import './App.css';
+import './App.scss';
+import { Component } from 'react';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+import { ThemeProvider } from '@material-ui/core/styles';
+import { createMuiTheme } from '@material-ui/core/styles';
+import green from '@material-ui/core/colors/green';
+
+import Default from './pages/Default/Default';
+
+const theme = createMuiTheme({
+  palette: {
+    primary: {
+      main: '#41257b',
+    },
+    secondary: green,
+  },
+});
+
+export default class App extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+    };
+  }
+  render() {
+    return (
+      <ThemeProvider theme={theme}>
+        {console.log(theme)}
+        <Default />
+      </ThemeProvider>
+    )
+  }
 }
-
-export default App;
