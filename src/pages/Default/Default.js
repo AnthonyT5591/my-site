@@ -8,11 +8,8 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 
-import InboxIcon from '@material-ui/icons/MoveToInbox';
-import MailIcon from '@material-ui/icons/Mail';
 import AccountBoxIcon from '@material-ui/icons/AccountBox';
 import SportsEsportsIcon from '@material-ui/icons/SportsEsports';
-import { AppBar, Toolbar, IconButton, Typography, Button } from '@material-ui/core';
 import { Container } from '@material-ui/core';
 
 import {
