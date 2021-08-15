@@ -1,35 +1,39 @@
 import React, { Component } from 'react'
 import { withStyles } from '@material-ui/core'
-import privateData from '../../private/secret.json'
 import ApiRequest from '../../helper/ApiRequest';
+
 const useStyles = (theme) => ({
     container: {
 
     },
 });
-
-class Stats extends Component {
+class Vitals extends Component {
     constructor(props) {
         super(props);
         this.state = {
-
-        }
-    };
-
+            vitals: {
+                info: 'No valid vitals.',
+                date: 'N/A'
+            }
+        };
+    }
     componentDidMount() {
-        ApiRequest(privateData.Riot.get_account_by_puuid_endpoint + privateData.Riot.personal_puuid, 'RIOT')
-            .then(data => {
-                console.log(data);
+        ApiRequest('', 'VITALS')
+            .then(passData => {
+                this.setState({ vitals: passData });
+                console.log(this.state);
             });
     }
     render() {
         const { classes } = this.props;
         return (
             <div className={classes.container}>
+                <div>{this.state.vitals.info}</div>
+                <div>{this.state.vitals.date}</div>
             </div>
         )
     }
 }
 
-export default withStyles(useStyles)(Stats)
 
+export default withStyles(useStyles)(Vitals)

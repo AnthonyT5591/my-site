@@ -1,23 +1,28 @@
 import privateData from '../private/secret.json'
 
-export default function ApiRequest(url) {
-    fetch(privateData.Proxy_Url,
+export default async function ApiRequest(url, requestType) {
+    let requestKey;
+    let requestTokenType;
+
+    let defaultEndpoint = privateData.Redirect_Endpoint;
+    switch (requestType) {
+        case 'RIOT': requestKey = privateData.Riot.Key; requestTokenType = privateData.Riot.TokenType; break;
+        case 'VITALS': requestKey = ''; requestTokenType = ''; defaultEndpoint = privateData.Vitals_Endpoint; break;
+    }
+    let result = await fetch(privateData.Proxy_Url + defaultEndpoint,
         {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': privateData.Proxy_Key,
                 'url': url,
-                'key': privateData.Riot.Key,
-                'tokentype': privateData.Riot.TokenType
+                'key': requestKey,
+                'tokentype': requestTokenType
             }
         })
         .then(res => res.json())
-        .then(
-            (result) => {
-                console.log(result);
-            },
-            (error) => {
-                console.log(error);
-            }
-        )
+        .then(res => {
+            return JSON.parse(res);
+        })
+
+    return result;
 }

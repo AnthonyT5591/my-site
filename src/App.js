@@ -9,12 +9,20 @@ import green from '@material-ui/core/colors/green';
 import Default from './pages/Default/Default';
 
 const theme = createMuiTheme({
-  palette: {
-    primary: {
-      main: '#41257b',
-    },
-    secondary: green,
-  },
+  // palette: {
+  //   primary: {
+  //     main: '#41257b',
+  //   },
+  //   secondary: green,
+  //   background: {
+  //     default: '#333'
+  //   }
+  // },
+  mixins: {
+    toolbar: {
+      padding: "20px"
+    }
+  }
 });
 
 export default class App extends Component {
