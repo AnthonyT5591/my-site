@@ -7,7 +7,7 @@ import { createMuiTheme } from '@material-ui/core/styles';
 import green from '@material-ui/core/colors/green';
 
 import Default from './pages/Default/Default';
-
+const defaultTheme = createMuiTheme();
 const theme = createMuiTheme({
   // palette: {
   //   primary: {
@@ -21,7 +21,9 @@ const theme = createMuiTheme({
   overrides: {
     MuiListItem: {
       gutters: {
-        paddingLeft: "22px"
+        [defaultTheme.breakpoints.up('sm')]: {
+          paddingLeft: "24px"
+        }
       }
     }
   }
