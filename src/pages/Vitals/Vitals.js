@@ -29,7 +29,7 @@ class Vitals extends Component {
         return (
             <div className={classes.container}>
                 <div>{this.state.vitals.info}</div>
-                <div>{this.state.vitals.date}</div>
+                <div>{new Date(this.state.vitals.date).toUTCString()}</div>
             </div>
         )
     }

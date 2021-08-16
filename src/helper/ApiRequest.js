@@ -1,4 +1,7 @@
 import privateData from '../private/secret.json'
+import Amplify, { API } from 'aws-amplify';
+
+
 
 export default async function ApiRequest(url, requestType) {
     let requestKey;
@@ -9,20 +12,33 @@ export default async function ApiRequest(url, requestType) {
         case 'RIOT': requestKey = privateData.Riot.Key; requestTokenType = privateData.Riot.TokenType; break;
         case 'VITALS': requestKey = ''; requestTokenType = ''; defaultEndpoint = privateData.Vitals_Endpoint; break;
     }
-    let result = await fetch(privateData.Proxy_Url + defaultEndpoint,
-        {
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': privateData.Proxy_Key,
-                'url': url,
-                'key': requestKey,
-                'tokentype': requestTokenType
-            }
-        })
-        .then(res => res.json())
-        .then(res => {
-            return JSON.parse(res);
-        })
+    Amplify.configure({
+        // OPTIONAL - if your API requires authentication 
+        Auth: {},
+        API: {
+            endpoints: [
+                {
+                    name: "myAPI",
+                    endpoint: privateData.API_Url
+                },
+            ]
+        }
+    });
+    const result = await API.get('myAPI', '/vitals')
+    // const result = await fetch(privateData.Proxy_Url + defaultEndpoint,
+    //     {
+    //         headers: {
+    //             'Content-Type': 'application/json',
+    //             'Authorization': privateData.Proxy_Key,
+    //             'url': url,
+    //             'key': requestKey,
+    //             'tokentype': requestTokenType
+    //         }
+    //     })
+    // .then(res => res.json())
+    // .then(res => {
+    //     return JSON.parse(res);
+    // })
 
     return result;
 }

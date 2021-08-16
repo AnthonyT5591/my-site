@@ -1,0 +1,35 @@
+{
+  "paths": [
+    {
+      "name": "/vitals",
+      "lambdaFunction": "checkVitals",
+      "privacy": {
+        "open": true
+      },
+      "policyResourceName": "/vitals"
+    }
+  ],
+  "resourceName": "myAPI",
+  "apiName": "myAPI",
+  "functionArns": [
+    {
+      "lambdaFunction": "checkVitals"
+    }
+  ],
+  "privacy": {
+    "auth": 0,
+    "unauth": 0,
+    "authRoleName": "amplify-amplifye285b9f936934-staging-12633-authRole",
+    "unAuthRoleName": "amplify-amplifye285b9f936934-staging-12633-unauthRole"
+  },
+  "dependsOn": [
+    {
+      "category": "function",
+      "resourceName": "checkVitals",
+      "attributes": [
+        "Name",
+        "Arn"
+      ]
+    }
+  ]
+}

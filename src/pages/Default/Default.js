@@ -98,7 +98,7 @@ class Default extends Component {
 
                     <main className={classes.content}>
                         <Paper elevation={3} className={classes.paperPadding}>
-                            <Container disableGutters={true}>
+                            <Container maxWidth={false} disableGutters={true}>
                                 <div className="app-content">
                                     <Switch>
                                         {/* <Route path="/stats">
