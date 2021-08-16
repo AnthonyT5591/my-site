@@ -1,4 +1,6 @@
 import React from 'react';
+import clsx from 'clsx';
+
 import Drawer from '@material-ui/core/Drawer';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import List from '@material-ui/core/List';
@@ -11,6 +13,8 @@ import { Paper, withStyles } from '@material-ui/core'
 import AccountBoxIcon from '@material-ui/icons/AccountBox';
 import SportsEsportsIcon from '@material-ui/icons/SportsEsports';
 import ContactMailIcon from '@material-ui/icons/ContactMail';
+import MenuIcon from '@material-ui/icons/Menu';
+import MenuOpenIcon from '@material-ui/icons/MenuOpen';
 
 import { Container } from '@material-ui/core';
 
@@ -41,6 +45,24 @@ const useStyles = (theme) => ({
         width: drawerWidth,
         flexShrink: 0,
     },
+    drawerOpen: {
+        width: drawerWidth,
+        transition: theme.transitions.create('width', {
+            easing: theme.transitions.easing.sharp,
+            duration: theme.transitions.duration.enteringScreen,
+        }),
+    },
+    drawerClose: {
+        transition: theme.transitions.create('width', {
+            easing: theme.transitions.easing.sharp,
+            duration: theme.transitions.duration.leavingScreen,
+        }),
+        overflowX: 'hidden',
+        width: theme.spacing(7) + 1,
+        [theme.breakpoints.up('sm')]: {
+            width: theme.spacing(9) + 1,
+        },
+    },
     drawerPaper: {
         width: drawerWidth,
     },
@@ -57,7 +79,8 @@ const useStyles = (theme) => ({
     title: {
         fontSize: "20px",
         textDecoration: "underline"
-    }
+    },
+
 });
 
 const itemList = [ // 0 index will be default path for "/"
@@ -66,6 +89,16 @@ const itemList = [ // 0 index will be default path for "/"
     // { Text: 'Stats', Icon: <SportsEsportsIcon />, path: "/stats" },
 ];
 class Default extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            drawerOpen: false
+        }
+        this.toggleDrawer = this.toggleDrawer.bind(this);
+    }
+    toggleDrawer() {
+        this.setState({ drawerOpen: !this.state.drawerOpen })
+    }
     render() {
         const { classes } = this.props;
         return (
@@ -73,17 +106,27 @@ class Default extends Component {
                 <CssBaseline />
                 <Router>
                     <Drawer
-                        className={classes.drawer}
                         variant="permanent"
+                        className={clsx(classes.drawer, {
+                            [classes.drawerOpen]: this.state.drawerOpen,
+                            [classes.drawerClose]: !this.state.drawerOpen,
+                        })}
                         classes={{
-                            paper: classes.drawerPaper,
+                            paper: clsx({
+                                [classes.drawerOpen]: this.state.drawerOpen,
+                                [classes.drawerClose]: !this.state.drawerOpen,
+                            }),
                         }}
-                        anchor="left"
                     >
-                        <div className={classes.toolbar}>
-                            <span className={classes.title}>Toxey.Dev</span>
-                        </div>
+                        <List>
+                            <ListItem button onClick={this.toggleDrawer}>
+                                <ListItemIcon>{(!this.state.drawerOpen) ? <MenuIcon /> : <MenuOpenIcon />}</ListItemIcon>
+                                <ListItemText className={classes.title} primary="Toxey.Dev" />
+                            </ListItem>
+                        </List>
+
                         <Divider />
+
                         <List>
                             {itemList.map((obj, i) => (
                                 <Link to={obj.path} key={i} style={{ textDecoration: 'none', color: 'inherit' }}>
