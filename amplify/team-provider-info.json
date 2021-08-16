@@ -15,7 +15,7 @@
       "function": {
         "checkVitals": {
           "deploymentBucketName": "amplify-amplifye285b9f936934-staging-12633-deployment",
-          "s3Key": "amplify-builds/checkVitals-37687355364453596764-build.zip"
+          "s3Key": "amplify-builds/checkVitals-446c3353344642587473-build.zip"
         }
       }
     }

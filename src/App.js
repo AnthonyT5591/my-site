@@ -18,9 +18,11 @@ const theme = createMuiTheme({
   //     default: '#333'
   //   }
   // },
-  mixins: {
-    toolbar: {
-      padding: "20px"
+  overrides: {
+    MuiListItem: {
+      gutters: {
+        paddingLeft: "22px"
+      }
     }
   }
 });
