@@ -16,6 +16,14 @@
         "checkVitals": {
           "deploymentBucketName": "amplify-amplifye285b9f936934-staging-12633-deployment",
           "s3Key": "amplify-builds/checkVitals-446c3353344642587473-build.zip"
+        },
+        "sendRequest": {
+          "deploymentBucketName": "amplify-amplifye285b9f936934-staging-12633-deployment",
+          "s3Key": "amplify-builds/sendRequest-4a4a616377696b434a33-build.zip"
+        },
+        "sendReq": {
+          "deploymentBucketName": "amplify-amplifye285b9f936934-staging-12633-deployment",
+          "s3Key": "amplify-builds/sendReq-426f57737069746e7631-build.zip"
         }
       }
     }

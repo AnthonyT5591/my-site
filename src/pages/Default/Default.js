@@ -86,7 +86,7 @@ const useStyles = (theme) => ({
 const itemList = [ // 0 index will be default path for "/"
     // { Text: 'About Me', Icon: <AccountBoxIcon />, path: "/about" },
     { Text: 'Socials', Icon: <ContactMailIcon />, path: "/socials" },
-    // { Text: 'Stats', Icon: <SportsEsportsIcon />, path: "/stats" },
+    { Text: 'Stats', Icon: <SportsEsportsIcon />, path: "/stats" },
 ];
 class Default extends Component {
     constructor(props) {
@@ -144,9 +144,9 @@ class Default extends Component {
                             <Container maxWidth={false} disableGutters={true}>
                                 <div className="app-content">
                                     <Switch>
-                                        {/* <Route path="/stats">
+                                        <Route path="/stats">
                                             <Stats />
-                                        </Route> */}
+                                        </Route>
                                         <Route path="/socials">
                                             <Socials />
                                         </Route>

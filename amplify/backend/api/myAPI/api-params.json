@@ -1,35 +1,74 @@
 {
-  "paths": [
-    {
-      "name": "/vitals",
-      "lambdaFunction": "checkVitals",
-      "privacy": {
-        "open": true
-      },
-      "policyResourceName": "/vitals"
-    }
-  ],
-  "resourceName": "myAPI",
-  "apiName": "myAPI",
-  "functionArns": [
-    {
-      "lambdaFunction": "checkVitals"
-    }
-  ],
-  "privacy": {
-    "auth": 0,
-    "unauth": 0,
-    "authRoleName": "amplify-amplifye285b9f936934-staging-12633-authRole",
-    "unAuthRoleName": "amplify-amplifye285b9f936934-staging-12633-unauthRole"
-  },
-  "dependsOn": [
-    {
-      "category": "function",
-      "resourceName": "checkVitals",
-      "attributes": [
-        "Name",
-        "Arn"
-      ]
-    }
-  ]
+    "paths": [
+        {
+            "name": "/vitals",
+            "lambdaFunction": "checkVitals",
+            "privacy": {
+                "open": true
+            },
+            "policyResourceName": "/vitals"
+        },
+        {
+            "name": "/sendReq",
+            "lambdaFunction": "sendReq",
+            "privacy": {
+                "open": true
+            },
+            "policyResourceName": "/sendReq"
+        },
+        {
+            "name": "/sendRequest",
+            "lambdaFunction": "sendRequest",
+            "privacy": {
+                "open": true
+            },
+            "policyResourceName": "/sendRequest"
+        }
+    ],
+    "resourceName": "myAPI",
+    "apiName": "myAPI",
+    "functionArns": [
+        {
+            "lambdaFunction": "checkVitals"
+        },
+        {
+            "lambdaFunction": "sendReq"
+        },
+        {
+            "lambdaFunction": "sendRequest"
+        }
+    ],
+    "privacy": {
+        "auth": 0,
+        "unauth": 0,
+        "authRoleName": "amplify-amplifye285b9f936934-staging-12633-authRole",
+        "unAuthRoleName": "amplify-amplifye285b9f936934-staging-12633-unauthRole"
+    },
+    "dependsOn": [
+        {
+            "category": "function",
+            "resourceName": "checkVitals",
+            "attributes": [
+                "Name",
+                "Arn"
+            ]
+        },
+        {
+            "category": "function",
+            "resourceName": "sendReq",
+            "attributes": [
+                "Name",
+                "Arn"
+            ]
+        },
+        {
+            "category": "function",
+            "resourceName": "sendRequest",
+            "attributes": [
+                "Name",
+                "Arn"
+            ]
+        }
+    ],
+    "uuid": "1afb8fc8"
 }
