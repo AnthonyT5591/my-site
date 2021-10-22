@@ -12,6 +12,7 @@ import { Paper, withStyles } from '@material-ui/core'
 
 import AccountBoxIcon from '@material-ui/icons/AccountBox';
 import SportsEsportsIcon from '@material-ui/icons/SportsEsports';
+import FunctionsIcon from '@material-ui/icons/Functions';
 import ContactMailIcon from '@material-ui/icons/ContactMail';
 import MenuIcon from '@material-ui/icons/Menu';
 import MenuOpenIcon from '@material-ui/icons/MenuOpen';
@@ -29,8 +30,11 @@ import {
 import About from '../About/About';
 import Stats from '../Stats/Stats';
 import Socials from '../Socials/Socials';
-import { Component } from 'react';
 import Vitals from '../Vitals/Vitals';
+import Algos from '../Algos/Algos'
+
+import { Component } from 'react';
+
 
 const drawerWidth = 240;
 const useStyles = (theme) => ({
@@ -86,7 +90,8 @@ const useStyles = (theme) => ({
 const itemList = [ // 0 index will be default path for "/"
     // { Text: 'About Me', Icon: <AccountBoxIcon />, path: "/about" },
     { Text: 'Socials', Icon: <ContactMailIcon />, path: "/socials" },
-    { Text: 'Stats', Icon: <SportsEsportsIcon />, path: "/stats" },
+    // { Text: 'Stats', Icon: <SportsEsportsIcon />, path: "/stats" },
+    { Text: 'Algos', Icon: <FunctionsIcon />, path: "/algos" }
 ];
 class Default extends Component {
     constructor(props) {
@@ -144,15 +149,18 @@ class Default extends Component {
                             <Container maxWidth={false} disableGutters={true}>
                                 <div className="app-content">
                                     <Switch>
-                                        <Route path="/stats">
+                                        {/* <Route path="/stats">
                                             <Stats />
-                                        </Route>
+                                        </Route> */}
                                         <Route path="/socials">
                                             <Socials />
                                         </Route>
                                         {/* <Route path="/about">
                                             <About />
                                         </Route> */}
+                                        <Route path="/algos">
+                                            <Algos />
+                                        </Route>
                                         <Route path="/vitals">
                                             <Vitals />
                                         </Route>
