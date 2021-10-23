@@ -7,9 +7,8 @@ import {
   RadioGroup,
   FormControlLabel,
 } from "@material-ui/core";
-import ShuffleIcon from "@material-ui/icons/Shuffle";
-import ShuffleIcon from "@material-ui/";
-// import FlipMove from 'react-flip-move';
+import ShuffleIcon from "@mui/icons-material/Shuffle";
+import CircularProgress from "@mui/material/CircularProgress";
 import { Flipper, Flipped } from "react-flip-toolkit";
 
 import { flash } from "react-animations";
@@ -18,7 +17,7 @@ import { StyleSheet, css } from "aphrodite";
 const styles = StyleSheet.create({
   bounce: {
     animationName: flash,
-    animationDuration: "1s",
+    animationDuration: "2s",
   },
   horizontal_bar_graph: {
     background: "#161b22",
@@ -131,7 +130,7 @@ export default class Algos extends Component {
     // TODO: bug with after sorting, shuffle doesnt start at beginning
     setTimeout(() => {
       this.startAlgo(algoFunc, funcType);
-    }, 1000);
+    }, 2000);
   }
 
   handleRadioChange(event) {
@@ -207,7 +206,16 @@ export default class Algos extends Component {
               }}
               variant="contained"
               color="primary"
-              startIcon={doinThings ? <CircularProgress /> : <ShuffleIcon />}
+              startIcon={
+                doinThings ? (
+                  <CircularProgress
+                    style={{ width: "15px", height: "15px" }}
+                    color="inherit"
+                  />
+                ) : (
+                  <ShuffleIcon />
+                )
+              }
               className={css(styles.button)}
               disabled={!sorted || doinThings ? true : false}
             >
@@ -219,7 +227,16 @@ export default class Algos extends Component {
               }}
               variant="contained"
               color="primary"
-              startIcon={<ShuffleIcon />}
+              startIcon={
+                doinThings ? (
+                  <CircularProgress
+                    style={{ width: "15px", height: "15px" }}
+                    color="inherit"
+                  />
+                ) : (
+                  <ShuffleIcon />
+                )
+              }
               className={css(styles.button)}
               disabled={sorted || doinThings ? true : false}
             >
