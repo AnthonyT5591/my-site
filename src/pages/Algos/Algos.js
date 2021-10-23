@@ -24,7 +24,7 @@ import { StyleSheet, css } from "aphrodite";
 const styles = StyleSheet.create({
   bounce: {
     animationName: flash,
-    animationDuration: "2s",
+    animationDuration: "1s",
   },
   horizontal_bar_graph: {
     background: "#161b22",
@@ -77,6 +77,7 @@ export default class Algos extends Component {
       selectedRadio: "dark_box",
       doinThings: false,
       currentAlgo: "",
+      currentAlgoIcon: <div></div>,
     };
 
     this.triggerAnimate = this.triggerAnimate.bind(this);
@@ -116,16 +117,24 @@ export default class Algos extends Component {
     tempArray[second] = temp;
     return tempArray;
   }
-  triggerAnimate(algoFunc, funcType, displayName) {
-    this.setState({ count: 0, doinThings: true, currentAlgo: displayName });
+
+  triggerAnimate(algoFunc, funcType, displayName, algoIcon) {
+    this.setState({
+      count: 0,
+      doinThings: true,
+      currentAlgo: displayName,
+      currentAlgoIcon: algoIcon,
+    });
     this.startAlgo(algoFunc, funcType);
   }
+
   isSorted(data) {
     return (
       JSON.stringify([...data].sort((a, b) => a - b)) ==
       JSON.stringify([...data])
     );
   }
+
   startAlgo(algoFunc, funcType) {
     const { animation, count, dataSet } = this.state;
 
@@ -152,7 +161,7 @@ export default class Algos extends Component {
     // TODO: bug with after sorting, shuffle doesnt start at beginning
     setTimeout(() => {
       this.startAlgo(algoFunc, funcType);
-    }, 2000);
+    }, 1000);
   }
 
   handleRadioChange(event) {
@@ -169,6 +178,7 @@ export default class Algos extends Component {
       dataSet,
       doinThings,
       currentAlgo,
+      currentAlgoIcon,
     } = this.state;
     const sorted = this.isSorted(dataSet);
     let displayData = [];
@@ -179,7 +189,6 @@ export default class Algos extends Component {
           <div
             className={css(
               i == numOne || i == numTwo ? animation : "",
-              //   styles.dark_box
               selectedRadio == "dark_box"
                 ? styles.dark_box
                 : styles.horizontal_bar_graph
@@ -213,7 +222,7 @@ export default class Algos extends Component {
             <Chip
               className={css(styles.chips)}
               color="primary"
-              icon={<BubbleChartOutlinedIcon />}
+              icon={currentAlgoIcon}
               label={currentAlgo}
             />
           ) : (
@@ -268,21 +277,13 @@ export default class Algos extends Component {
               this.triggerAnimate(
                 this.fisher_yates_shuffle,
                 0,
-                "Fisher Yates Shuffle"
+                "Fisher Yates Shuffle",
+                <ShuffleIcon />
               );
             }}
             variant="contained"
             color="primary"
-            startIcon={
-              doinThings ? (
-                <CircularProgress
-                  style={{ width: "15px", height: "15px" }}
-                  color="inherit"
-                />
-              ) : (
-                <ShuffleIcon />
-              )
-            }
+            startIcon={<ShuffleIcon />}
             className={css(styles.button)}
             disabled={!sorted || doinThings ? true : false}
           >
@@ -290,20 +291,16 @@ export default class Algos extends Component {
           </Button>
           <Button
             onClick={() => {
-              this.triggerAnimate(this.bubble_sort, 1, "Bubble Sort");
+              this.triggerAnimate(
+                this.bubble_sort,
+                1,
+                "Bubble Sort",
+                <BubbleChartOutlinedIcon />
+              );
             }}
             variant="contained"
             color="primary"
-            startIcon={
-              doinThings ? (
-                <CircularProgress
-                  style={{ width: "15px", height: "15px" }}
-                  color="inherit"
-                />
-              ) : (
-                <BubbleChartOutlinedIcon />
-              )
-            }
+            startIcon={<BubbleChartOutlinedIcon />}
             className={css(styles.button)}
             disabled={sorted || doinThings ? true : false}
           >
