@@ -7,7 +7,14 @@ import {
   RadioGroup,
   FormControlLabel,
 } from "@material-ui/core";
+
 import ShuffleIcon from "@mui/icons-material/Shuffle";
+import CheckCircleOutlinedIcon from "@mui/icons-material/CheckCircleOutlined";
+import ErrorOutlineOutlinedIcon from "@mui/icons-material/ErrorOutlineOutlined";
+import BubbleChartOutlinedIcon from "@mui/icons-material/BubbleChartOutlined";
+
+import Chip from "@mui/material/Chip";
+import LinearProgress from "@mui/material/LinearProgress";
 import CircularProgress from "@mui/material/CircularProgress";
 import { Flipper, Flipped } from "react-flip-toolkit";
 
@@ -35,13 +42,26 @@ const styles = StyleSheet.create({
     borderRadius: "10px",
     margin: "20px",
   },
-  container: {
+  status_container: {
+    marginBottom: "10px",
+  },
+  sorting_container: {
     display: "flex",
     flexWrap: "wrap",
     justifyContent: "center",
   },
   button: {
     margin: "5px",
+  },
+  align_items: {
+    display: "flex",
+    alignItems: "center",
+  },
+  chips: {
+    margin: "2px",
+  },
+  progressBar: {
+    marginBottom: "20px",
   },
 });
 
@@ -56,6 +76,7 @@ export default class Algos extends Component {
       numTwo: null,
       selectedRadio: "dark_box",
       doinThings: false,
+      currentAlgo: "",
     };
 
     this.triggerAnimate = this.triggerAnimate.bind(this);
@@ -95,8 +116,8 @@ export default class Algos extends Component {
     tempArray[second] = temp;
     return tempArray;
   }
-  triggerAnimate(algoFunc, funcType) {
-    this.setState({ count: 0, doinThings: true });
+  triggerAnimate(algoFunc, funcType, displayName) {
+    this.setState({ count: 0, doinThings: true, currentAlgo: displayName });
     this.startAlgo(algoFunc, funcType);
   }
   isSorted(data) {
@@ -124,6 +145,7 @@ export default class Algos extends Component {
         numOne: null,
         numTwo: null,
         doinThings: false,
+        currentAlgo: null,
       });
       return;
     }
@@ -139,8 +161,15 @@ export default class Algos extends Component {
     });
   }
   render() {
-    const { animation, numOne, numTwo, selectedRadio, dataSet, doinThings } =
-      this.state;
+    const {
+      animation,
+      numOne,
+      numTwo,
+      selectedRadio,
+      dataSet,
+      doinThings,
+      currentAlgo,
+    } = this.state;
     const sorted = this.isSorted(dataSet);
     let displayData = [];
     this.state.dataSet.forEach((c, i) => {
@@ -164,85 +193,122 @@ export default class Algos extends Component {
     });
     return (
       <div>
+        <div className={css(styles.status_container)}>
+          {sorted ? (
+            <Chip
+              className={css(styles.chips)}
+              color="success"
+              icon={<CheckCircleOutlinedIcon />}
+              label="Sorted"
+            />
+          ) : (
+            <Chip
+              className={css(styles.chips)}
+              color="warning"
+              icon={<ErrorOutlineOutlinedIcon />}
+              label="Not Sorted"
+            />
+          )}
+          {currentAlgo ? (
+            <Chip
+              className={css(styles.chips)}
+              color="primary"
+              icon={<BubbleChartOutlinedIcon />}
+              label={currentAlgo}
+            />
+          ) : (
+            <div></div>
+          )}
+        </div>
+        {currentAlgo ? (
+          <LinearProgress
+            className={css(styles.progressBar)}
+            color="secondary"
+          />
+        ) : (
+          <div></div>
+        )}
+
         <div>
-          <div>{sorted ? "SORTED" : "NOT SORTED"}</div>
-          <div>
-            <FormControl component="fieldset">
-              <FormLabel component="legend">Presentation</FormLabel>
-              <RadioGroup
-                row
-                aria-label="presentation"
-                name="controlled-radio-buttons-group"
-                value={selectedRadio}
-                onChange={this.handleRadioChange}
-              >
-                <FormControlLabel
-                  value="dark_box"
-                  control={<Radio />}
-                  label="Dark Box"
+          <FormControl component="fieldset">
+            <FormLabel component="legend">Presentation</FormLabel>
+            <RadioGroup
+              row
+              aria-label="presentation"
+              name="controlled-radio-buttons-group"
+              value={selectedRadio}
+              onChange={this.handleRadioChange}
+            >
+              <FormControlLabel
+                value="dark_box"
+                control={<Radio />}
+                label="Dark Box"
+              />
+              <FormControlLabel
+                value="horizontal_bar_graph"
+                control={<Radio />}
+                label="horizontal_bar_graph"
+              />
+            </RadioGroup>
+          </FormControl>
+        </div>
+        <div>
+          <Flipper
+            flipKey={dataSet.join("")}
+            className={
+              selectedRadio == "dark_box" ? css(styles.sorting_container) : ""
+            }
+          >
+            {displayData}
+          </Flipper>
+        </div>
+        <div>
+          <Button
+            onClick={() => {
+              this.triggerAnimate(
+                this.fisher_yates_shuffle,
+                0,
+                "Fisher Yates Shuffle"
+              );
+            }}
+            variant="contained"
+            color="primary"
+            startIcon={
+              doinThings ? (
+                <CircularProgress
+                  style={{ width: "15px", height: "15px" }}
+                  color="inherit"
                 />
-                <FormControlLabel
-                  value="horizontal_bar_graph"
-                  control={<Radio />}
-                  label="horizontal_bar_graph"
+              ) : (
+                <ShuffleIcon />
+              )
+            }
+            className={css(styles.button)}
+            disabled={!sorted || doinThings ? true : false}
+          >
+            Fisher Yates Shuffle
+          </Button>
+          <Button
+            onClick={() => {
+              this.triggerAnimate(this.bubble_sort, 1, "Bubble Sort");
+            }}
+            variant="contained"
+            color="primary"
+            startIcon={
+              doinThings ? (
+                <CircularProgress
+                  style={{ width: "15px", height: "15px" }}
+                  color="inherit"
                 />
-              </RadioGroup>
-            </FormControl>
-          </div>
-          <div>
-            <Flipper
-              flipKey={dataSet.join("")}
-              className={
-                selectedRadio == "dark_box" ? css(styles.container) : ""
-              }
-            >
-              {displayData}
-            </Flipper>
-          </div>
-          <div>
-            <Button
-              onClick={() => {
-                this.triggerAnimate(this.fisher_yates_shuffle, 0);
-              }}
-              variant="contained"
-              color="primary"
-              startIcon={
-                doinThings ? (
-                  <CircularProgress
-                    style={{ width: "15px", height: "15px" }}
-                    color="inherit"
-                  />
-                ) : (
-                  <ShuffleIcon />
-                )
-              }
-              className={css(styles.button)}
-              disabled={!sorted || doinThings ? true : false}
-            >
-              Fisher Yates Shuffle
-            </Button>
-            <Button
-              onClick={() => {
-                this.triggerAnimate(this.bubble_sort, 1);
-              }}
-              variant="contained"
-              color="primary"
-              startIcon={
-                doinThings ? (
-                  <CircularProgress
-                    style={{ width: "15px", height: "15px" }}
-                    color="inherit"
-                  />
-                ) : (
-                  <ShuffleIcon />
-                )
-              }
-              className={css(styles.button)}
-              disabled={sorted || doinThings ? true : false}
-            >
-              Bubble Sort
-            </Button>
-          </div>
+              ) : (
+                <BubbleChartOutlinedIcon />
+              )
+            }
+            className={css(styles.button)}
+            disabled={sorted || doinThings ? true : false}
+          >
+            Bubble Sort
+          </Button>
         </div>
       </div>
     );
