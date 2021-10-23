@@ -24,7 +24,6 @@ export default async function ApiRequest(url, requestType) {
             ]
         }
     });
-    // const result = await API.get('myAPI', '/sendReq')
     const result = await API.post('myAPI', '/sendRequest', {
         body: {
             outUrl: 'https://cors-anywhere.herokuapp.com/https://jsonplaceholder.typicode.com/posts',
@@ -32,21 +31,5 @@ export default async function ApiRequest(url, requestType) {
             // tokenType: requestTokenType
         }
     })
-    // const result = await API.get('myAPI', '/vitals')
-    // const result = await fetch(privateData.Proxy_Url + defaultEndpoint,
-    //     {
-    //         headers: {
-    //             'Content-Type': 'application/json',
-    //             'Authorization': privateData.Proxy_Key,
-    //             'url': url,
-    //             'key': requestKey,
-    //             'tokentype': requestTokenType
-    //         }
-    //     })
-    // .then(res => res.json())
-    // .then(res => {
-    //     return JSON.parse(res);
-    // })
-
     return result;
 }
