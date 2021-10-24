@@ -155,6 +155,10 @@ const _colors = {
         main: "#fea3aa",
         accent: "#a3fef7",
       },
+      {
+        main: "#baed91",
+        accent: "#c491ed",
+      },
     ],
   },
 };
@@ -257,12 +261,12 @@ export default class Algos extends Component {
             return {
               background: `${
                 _colors[this.state.selectedColorRadio].colors[
-                  Math.floor(Math.random() * _colors["default"].colors.length)
+                  c % _colors[this.state.selectedColorRadio].colors.length
                 ].main
               }`,
               color: `${
                 _colors[this.state.selectedColorRadio].colors[
-                  Math.floor(Math.random() * _colors["default"].colors.length)
+                  c % _colors[this.state.selectedColorRadio].colors.length
                 ].accent
               }`,
               minHeight: `${(c / dataSet.length) * 100}%`,
@@ -278,12 +282,12 @@ export default class Algos extends Component {
             return {
               background: `${
                 _colors[this.state.selectedColorRadio].colors[
-                  Math.floor(Math.random() * _colors["default"].colors.length)
+                  c % _colors[this.state.selectedColorRadio].colors.length
                 ].main
               }`,
               color: `${
                 _colors[this.state.selectedColorRadio].colors[
-                  Math.floor(Math.random() * _colors["default"].colors.length)
+                  c % _colors[this.state.selectedColorRadio].colors.length
                 ].accent
               }`,
               minWidth: `${(c / dataSet.length) * 100}%`,
