@@ -92,50 +92,6 @@ const styles = StyleSheet.create({
   },
 });
 
-// const _presentations = {
-//   vertical_bar_graph: {
-//     container_styles: styles.vertical_container,
-//     element_styles: styles.vertical_bar_graph,
-//     calculated_styles: (c, dataSet) => {
-//       return {
-//         background: `${
-//           _colors["default"].colors[
-//             Math.floor(Math.random() * _colors["default"].colors.length)
-//           ].main
-//         }`,
-//         color: `${
-//           _colors["default"].colors[
-//             Math.floor(Math.random() * _colors["default"].colors.length)
-//           ].accent
-//         }`,
-//         minHeight: `${(c / dataSet.length) * 100}%`,
-//       };
-//     },
-//     text: "Vertical Bar Graph",
-//     value: "vertical_bar_graph",
-//   },
-//   horizontal_bar_graph: {
-//     container_styles: styles.general_container,
-//     element_styles: styles.horizontal_bar_graph,
-//     calculated_styles: (c, dataSet) => {
-//       return {
-//         background: `${
-//           _colors[selectedColorRadio].colors[
-//             Math.floor(Math.random() * _colors["default"].colors.length)
-//           ].main
-//         }`,
-//         color: `${
-//           _colors[selectedColorRadio].colors[
-//             Math.floor(Math.random() * _colors["default"].colors.length)
-//           ].accent
-//         }`,
-//         minWidth: `${(c / dataSet.length) * 100}%`,
-//       };
-//     },
-//     text: "Horizontal Bar Graph",
-//     value: "horizontal_bar_graph",
-//   },
-// };
 const _colors = {
   default: {
     text: "Default",
@@ -212,7 +168,8 @@ export default class Algos extends Component {
         {
           text: "Bubble Sort",
           func: (index) => {
-            if (index + 1 == this.state.dataSet.length) return;
+            if (index + 1 == this.state.dataSet.length)
+              return [...this.state.dataSet];
 
             this.setState({
               numOne: index,
@@ -396,6 +353,7 @@ export default class Algos extends Component {
       currentAlgoIcon,
       _presentations,
     } = this.state;
+
     const sorted = this.isSorted(dataSet);
 
     let displayData = [];
@@ -413,7 +371,7 @@ export default class Algos extends Component {
               dataSet
             )}
           >
-            {c} {_icons[c - 1]}
+            {c} {_icons[c % _icons.length]}
           </div>
         </Flipped>
       );
