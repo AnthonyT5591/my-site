@@ -69,15 +69,15 @@ export default class Algos extends Component {
   constructor() {
     super();
     this.state = {
-      dataSet: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+      dataSet: [],
       animation: styles.bounce,
       count: 0,
       numOne: null,
       numTwo: null,
-      selectedRadio: "dark_box",
+      selectedRadio: "horizontal_bar_graph",
       doinThings: false,
       currentAlgo: "",
-      currentAlgoIcon: <div></div>,
+      currentAlgoIcon: null,
     };
 
     this.triggerAnimate = this.triggerAnimate.bind(this);
@@ -87,6 +87,11 @@ export default class Algos extends Component {
     this.handleRadioChange = this.handleRadioChange.bind(this);
   }
 
+  componentDidMount() {
+    this.setState({
+      dataSet: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+    });
+  }
   fisher_yates_shuffle(index) {
     let randomNum = Math.floor(
       Math.random() * (this.state.dataSet.length - index) + index
@@ -125,6 +130,7 @@ export default class Algos extends Component {
       currentAlgo: displayName,
       currentAlgoIcon: algoIcon,
     });
+
     this.startAlgo(algoFunc, funcType);
   }
 
@@ -137,12 +143,6 @@ export default class Algos extends Component {
 
   startAlgo(algoFunc, funcType) {
     const { animation, count, dataSet } = this.state;
-
-    this.setState({
-      animation: animation,
-      dataSet: algoFunc(count),
-      count: count == dataSet.length - 1 ? 0 : count + 1,
-    });
 
     // reset values after completing sort or shuffle
     if (
@@ -158,6 +158,12 @@ export default class Algos extends Component {
       });
       return;
     }
+    this.setState({
+      animation: animation,
+      dataSet: algoFunc(count),
+      count: count == dataSet.length - 1 ? 0 : count + 1,
+    });
+
     // TODO: bug with after sorting, shuffle doesnt start at beginning
     setTimeout(() => {
       this.startAlgo(algoFunc, funcType);
@@ -249,14 +255,14 @@ export default class Algos extends Component {
               onChange={this.handleRadioChange}
             >
               <FormControlLabel
+                value="horizontal_bar_graph"
+                control={<Radio />}
+                label="Horizontal Bar Graph"
+              />
+              <FormControlLabel
                 value="dark_box"
                 control={<Radio />}
                 label="Dark Box"
-              />
-              <FormControlLabel
-                value="horizontal_bar_graph"
-                control={<Radio />}
-                label="horizontal_bar_graph"
               />
             </RadioGroup>
           </FormControl>
