@@ -115,6 +115,22 @@ const _colors = {
         main: "#baed91",
         accent: "#c491ed",
       },
+      {
+        main: "#f8b88b",
+        accent: "#8bcbf8",
+      },
+      {
+        main: "#b2cefe",
+        accent: "#fee2b2",
+      },
+      {
+        main: "#faf884",
+        accent: "#8486fa",
+      },
+      {
+        main: "#f2a2e8",
+        accent: "#a2f2ac",
+      },
     ],
   },
 };
@@ -135,7 +151,7 @@ export default class Algos extends Component {
   constructor() {
     super();
     this.state = {
-      numberOfCases: 10,
+      numberOfCases: 20,
       dataSet: [],
       animation: styles.animation,
       count: 0,
@@ -209,6 +225,33 @@ export default class Algos extends Component {
             return sorted || doinThings ? true : false;
           },
         },
+        // {
+        //   text: "Insert Sort",
+        //   func: (index) => {
+        //     if (index == 0) return [...this.state.dataSet];
+
+        //     for (let i = index; i < this.state.dataSet.length; i++) {
+        //       if (this.state.dataSet[index - 1] > this.state.dataSet[index]) {
+        //          this.swap(index, index - 1);
+        //       } 
+        //     }
+        //     this.setState({
+        //       numOne: index,
+        //       numTwo: index - 1,
+        //     });
+
+        //     // if (this.state.dataSet[index - 1] > this.state.dataSet[index]) {
+        //     //   return this.swap(index, index - 1);
+        //     // } else {
+        //     //   return [...this.state.dataSet];
+        //     // }
+        //   },
+        //   type: 1,
+        //   icon: <TouchAppOutlinedIcon />,
+        //   disabledCondition: (sorted, doinThings) => {
+        //     return sorted || doinThings ? true : false;
+        //   },
+        // },
       ],
       _presentations: {
         vertical_bar_graph: {
