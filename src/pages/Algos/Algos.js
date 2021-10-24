@@ -14,6 +14,18 @@ import ErrorOutlineOutlinedIcon from "@mui/icons-material/ErrorOutlineOutlined";
 import BubbleChartOutlinedIcon from "@mui/icons-material/BubbleChartOutlined";
 import TouchAppOutlinedIcon from "@mui/icons-material/TouchAppOutlined";
 
+// icons used to display data
+import CoronavirusIcon from "@mui/icons-material/Coronavirus";
+import AccountBoxIcon from "@mui/icons-material/AccountBox";
+import AirplanemodeActiveIcon from "@mui/icons-material/AirplanemodeActive";
+import AirportShuttleIcon from "@mui/icons-material/AirportShuttle";
+import AllInclusiveIcon from "@mui/icons-material/AllInclusive";
+import AndroidIcon from "@mui/icons-material/Android";
+import BedtimeIcon from "@mui/icons-material/Bedtime";
+import BoltIcon from "@mui/icons-material/Bolt";
+import BuildIcon from "@mui/icons-material/Build";
+import CakeIcon from "@mui/icons-material/Cake";
+
 import Chip from "@mui/material/Chip";
 import LinearProgress from "@mui/material/LinearProgress";
 import CircularProgress from "@mui/material/CircularProgress";
@@ -28,19 +40,22 @@ const styles = StyleSheet.create({
     animationDuration: "1s",
   },
   vertical_bar_graph: {
-    background: "#161b22",
-    color: "#fff",
-    padding: "5px 10px 1px 10px",
+    padding: "5px 10px",
     borderRadius: "10px",
     margin: "1px",
     minWidth: "20px",
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "space-between",
+    alignItems: "center",
   },
   horizontal_bar_graph: {
-    background: "#161b22",
-    color: "#fff",
-    padding: "5px 10px 5px 8px",
+    padding: "5px 10px",
     borderRadius: "10px",
     margin: "1px 0px",
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
   },
   status_container: {
     marginBottom: "10px",
@@ -77,41 +92,97 @@ const styles = StyleSheet.create({
   },
 });
 
-const _presentations = {
-  vertical_bar_graph: {
-    container_styles: styles.vertical_container,
-    element_styles: styles.vertical_bar_graph,
-    calculated_styles: (c, dataSet) => {
-      return {
-        minHeight: `${(c / dataSet.length) * 100}%`,
-      };
-    },
-    text: "Vertical Bar Graph",
-    value: "vertical_bar_graph",
+// const _presentations = {
+//   vertical_bar_graph: {
+//     container_styles: styles.vertical_container,
+//     element_styles: styles.vertical_bar_graph,
+//     calculated_styles: (c, dataSet) => {
+//       return {
+//         background: `${
+//           _colors["default"].colors[
+//             Math.floor(Math.random() * _colors["default"].colors.length)
+//           ].main
+//         }`,
+//         color: `${
+//           _colors["default"].colors[
+//             Math.floor(Math.random() * _colors["default"].colors.length)
+//           ].accent
+//         }`,
+//         minHeight: `${(c / dataSet.length) * 100}%`,
+//       };
+//     },
+//     text: "Vertical Bar Graph",
+//     value: "vertical_bar_graph",
+//   },
+//   horizontal_bar_graph: {
+//     container_styles: styles.general_container,
+//     element_styles: styles.horizontal_bar_graph,
+//     calculated_styles: (c, dataSet) => {
+//       return {
+//         background: `${
+//           _colors[selectedColorRadio].colors[
+//             Math.floor(Math.random() * _colors["default"].colors.length)
+//           ].main
+//         }`,
+//         color: `${
+//           _colors[selectedColorRadio].colors[
+//             Math.floor(Math.random() * _colors["default"].colors.length)
+//           ].accent
+//         }`,
+//         minWidth: `${(c / dataSet.length) * 100}%`,
+//       };
+//     },
+//     text: "Horizontal Bar Graph",
+//     value: "horizontal_bar_graph",
+//   },
+// };
+const _colors = {
+  default: {
+    text: "Default",
+    value: "default",
+    colors: [
+      {
+        main: "#161b22",
+        accent: "#fff",
+      },
+    ],
   },
-  horizontal_bar_graph: {
-    container_styles: styles.general_container,
-    element_styles: styles.horizontal_bar_graph,
-    calculated_styles: (c, dataSet) => {
-      return { width: `${(c / dataSet.length) * 100}%` };
-    },
-    text: "Horizontal Bar Graph",
-    value: "horizontal_bar_graph",
+  pastel: {
+    text: "Pastel",
+    value: "pastel",
+    colors: [
+      {
+        main: "#fea3aa",
+        accent: "#a3fef7",
+      },
+    ],
   },
 };
-const _colors = [];
 
+const _icons = [
+  <CoronavirusIcon fontSize="small" />,
+  <AccountBoxIcon fontSize="small" />,
+  <AirplanemodeActiveIcon fontSize="small" />,
+  <AirportShuttleIcon fontSize="small" />,
+  <AllInclusiveIcon fontSize="small" />,
+  <AndroidIcon fontSize="small" />,
+  <BedtimeIcon fontSize="small" />,
+  <BoltIcon fontSize="small" />,
+  <BuildIcon fontSize="small" />,
+  <CakeIcon fontSize="small" />,
+];
 export default class Algos extends Component {
   constructor() {
     super();
     this.state = {
-      numberOfCases: 20,
+      numberOfCases: 10,
       dataSet: [],
       animation: styles.animation,
       count: 0,
       numOne: null,
       numTwo: null,
-      selectedRadio: "horizontal_bar_graph",
+      selectedPresentationRadio: "horizontal_bar_graph",
+      selectedColorRadio: "default",
       doinThings: false,
       currentAlgo: "",
       currentAlgoIcon: null,
@@ -128,7 +199,7 @@ export default class Algos extends Component {
             });
             return this.swap(index, randomNum);
           },
-          type: 0,
+          type: 0, // 0 for shuffle, 1 for sort
           icon: <ShuffleIcon />,
           disabledCondition: (sorted, doinThings) => {
             return !sorted || doinThings ? true : false;
@@ -137,6 +208,8 @@ export default class Algos extends Component {
         {
           text: "Bubble Sort",
           func: (index) => {
+            if (index + 1 == this.state.dataSet.length) return;
+
             this.setState({
               numOne: index,
               numTwo: index + 1,
@@ -176,11 +249,57 @@ export default class Algos extends Component {
           },
         },
       ],
+      _presentations: {
+        vertical_bar_graph: {
+          container_styles: styles.vertical_container,
+          element_styles: styles.vertical_bar_graph,
+          calculated_styles: (c, dataSet) => {
+            return {
+              background: `${
+                _colors[this.state.selectedColorRadio].colors[
+                  Math.floor(Math.random() * _colors["default"].colors.length)
+                ].main
+              }`,
+              color: `${
+                _colors[this.state.selectedColorRadio].colors[
+                  Math.floor(Math.random() * _colors["default"].colors.length)
+                ].accent
+              }`,
+              minHeight: `${(c / dataSet.length) * 100}%`,
+            };
+          },
+          text: "Vertical Bar Graph",
+          value: "vertical_bar_graph",
+        },
+        horizontal_bar_graph: {
+          container_styles: styles.general_container,
+          element_styles: styles.horizontal_bar_graph,
+          calculated_styles: (c, dataSet) => {
+            return {
+              background: `${
+                _colors[this.state.selectedColorRadio].colors[
+                  Math.floor(Math.random() * _colors["default"].colors.length)
+                ].main
+              }`,
+              color: `${
+                _colors[this.state.selectedColorRadio].colors[
+                  Math.floor(Math.random() * _colors["default"].colors.length)
+                ].accent
+              }`,
+              minWidth: `${(c / dataSet.length) * 100}%`,
+            };
+          },
+          text: "Horizontal Bar Graph",
+          value: "horizontal_bar_graph",
+        },
+      },
     };
 
     this.triggerAnimate = this.triggerAnimate.bind(this);
     this.swap = this.swap.bind(this);
-    this.handleRadioChange = this.handleRadioChange.bind(this);
+    this.handlePresentationRadioChange =
+      this.handlePresentationRadioChange.bind(this);
+    this.handleColorRadioChange = this.handleColorRadioChange.bind(this);
   }
 
   componentDidMount() {
@@ -248,21 +367,30 @@ export default class Algos extends Component {
     }, 1000);
   }
 
-  handleRadioChange(event) {
+  handlePresentationRadioChange(event) {
     this.setState({
-      selectedRadio: event.target.value,
+      selectedPresentationRadio: event.target.value,
     });
   }
+
+  handleColorRadioChange(event) {
+    this.setState({
+      selectedColorRadio: event.target.value,
+    });
+  }
+
   render() {
     const {
       animation,
       numOne,
       numTwo,
-      selectedRadio,
+      selectedPresentationRadio,
+      selectedColorRadio,
       dataSet,
       doinThings,
       currentAlgo,
       currentAlgoIcon,
+      _presentations,
     } = this.state;
     const sorted = this.isSorted(dataSet);
 
@@ -274,11 +402,14 @@ export default class Algos extends Component {
           <div
             className={css(
               i == numOne || i == numTwo ? animation : "",
-              _presentations[selectedRadio].element_styles
+              _presentations[selectedPresentationRadio].element_styles
             )}
-            style={_presentations[selectedRadio].calculated_styles(c, dataSet)}
+            style={_presentations[selectedPresentationRadio].calculated_styles(
+              c,
+              dataSet
+            )}
           >
-            {c}
+            {c} {_icons[c - 1]}
           </div>
         </Flipped>
       );
@@ -315,6 +446,18 @@ export default class Algos extends Component {
       );
     }
 
+    let colorRadios = [];
+    for (const item in _colors) {
+      let c = _colors[item];
+      colorRadios.push(
+        <FormControlLabel
+          key={c.text}
+          value={c.value}
+          control={<Radio />}
+          label={c.text}
+        />
+      );
+    }
     return (
       <div>
         <div className={css(styles.status_container)}>
@@ -360,17 +503,35 @@ export default class Algos extends Component {
               row
               aria-label="presentation"
               name="controlled-radio-buttons-group"
-              value={selectedRadio}
-              onChange={this.handleRadioChange}
+              value={selectedPresentationRadio}
+              onChange={this.handlePresentationRadioChange}
             >
               {presentationRadios}
             </RadioGroup>
           </FormControl>
         </div>
+
+        <div className={css(styles.color_container)}>
+          <FormControl component="fieldset">
+            <FormLabel component="legend">Color</FormLabel>
+            <RadioGroup
+              row
+              aria-label="presentation"
+              name="controlled-radio-buttons-group"
+              value={selectedColorRadio}
+              onChange={this.handleColorRadioChange}
+            >
+              {colorRadios}
+            </RadioGroup>
+          </FormControl>
+        </div>
+
         <div className={css(styles.display_container)}>
           <Flipper
             flipKey={dataSet.join("")}
-            className={css(_presentations[selectedRadio].container_styles)}
+            className={css(
+              _presentations[selectedPresentationRadio].container_styles
+            )}
           >
             {displayData}
           </Flipper>
