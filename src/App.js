@@ -1,13 +1,8 @@
-import logo from './logo.svg';
 import './App.scss';
 import { Component } from 'react';
-
-
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-
-
 import Default from './pages/Default/Default';
-// const defaultTheme = createTheme();
+
 const theme = createTheme({
   palette: {
     primary: {
@@ -23,12 +18,6 @@ const theme = createTheme({
       default: '#161b22'
     }
   },
-  // transitions: {
-  //   duration: {
-  //     enteringScreen: 5000,
-  //     leavingScreen: 5000
-  //   }
-  // },
   components: {
     MuiPaper: {
       styleOverrides: {

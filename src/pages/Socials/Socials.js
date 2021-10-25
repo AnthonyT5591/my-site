@@ -1,10 +1,13 @@
 import React, { Component } from 'react'
 import privateData from '../../private/secret.json'
 
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
+import {
+    List,
+    ListItem,
+    ListItemIcon,
+    ListItemText,
+    Divider,
+} from "@mui/material";
 
 import EmailIcon from '@mui/icons-material/Email';
 import TwitterIcon from '@mui/icons-material/Twitter';
@@ -41,10 +44,13 @@ export default class Socials extends Component {
     render() {
         return (
             <div>
-                <div>Contact me!</div>
+                <div className={css(styles.title_container)}>
+                    <div>Contact me!</div>
+                    <Divider />
+                </div>
                 <List>
                     {this.state.itemList.map((obj, i) => (
-                        <ListItem button key={obj.Text} className={(i % 2 == 0) ? css(styles.socials_container, styles.default) : css(styles.socials_container)} component="a" href={obj.href} target="_blank" rel="noreferrer noopener">
+                        <ListItem button key={obj.Text} className={(i % 2 === 0) ? css(styles.socials_container, styles.default) : css(styles.socials_container)} component="a" href={obj.href} target="_blank" rel="noreferrer noopener">
                             <ListItemIcon>{obj.Icon}</ListItemIcon>
                             <ListItemText primary={obj.Text} />
                         </ListItem>

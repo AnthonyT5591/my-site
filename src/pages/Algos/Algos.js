@@ -6,6 +6,7 @@ import {
   FormLabel,
   RadioGroup,
   FormControlLabel,
+  Divider,
 } from "@mui/material";
 
 // icons for buttons and chips
@@ -57,6 +58,9 @@ const styles = StyleSheet.create({
     display: "flex",
     justifyContent: "space-between",
     alignItems: "center",
+  },
+  title_container: {
+    marginBottom: "20px",
   },
   status_container: {
     marginBottom: "10px",
@@ -477,6 +481,10 @@ export default class Algos extends Component {
     }
     return (
       <div>
+        <div className={css(styles.title_container)}>
+          <div>Algo Visualizer</div>
+          <Divider />
+        </div>
         <div className={css(styles.status_container)}>
           {sorted ? (
             <Chip
