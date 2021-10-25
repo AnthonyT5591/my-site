@@ -12,11 +12,15 @@ const theme = createTheme({
       main: '#00e676'
     },
     info: {
-      main: '#e60070'
+      main: '#e60070',
     },
     background: {
       default: '#161b22'
+    },
+    action: {
+      // disabledBackground: "#b4c0cf"
     }
+
   },
   components: {
     MuiPaper: {
