@@ -1,13 +1,8 @@
 import React, { Component } from 'react'
-import { withStyles } from '@material-ui/core'
 import ApiRequest from '../../helper/ApiRequest';
 
-const useStyles = (theme) => ({
-    container: {
 
-    },
-});
-class Vitals extends Component {
+export default class Vitals extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -35,5 +30,3 @@ class Vitals extends Component {
     }
 }
 
-
-export default withStyles(useStyles)(Vitals)

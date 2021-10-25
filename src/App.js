@@ -2,33 +2,62 @@ import logo from './logo.svg';
 import './App.scss';
 import { Component } from 'react';
 
-import { ThemeProvider } from '@material-ui/core/styles';
-import { createMuiTheme } from '@material-ui/core/styles';
-import green from '@material-ui/core/colors/green';
+
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+
 
 import Default from './pages/Default/Default';
-const defaultTheme = createMuiTheme();
-const theme = createMuiTheme({
-  // palette: {
-  //   primary: {
-  //     main: '#41257b',
-  //   },
-  //   secondary: green,
-  //   background: {
-  //     default: '#333'
+// const defaultTheme = createTheme();
+const theme = createTheme({
+  palette: {
+    primary: {
+      main: '#b4c0cf',
+    },
+    secondary: {
+      main: '#00e676'
+    },
+    info: {
+      main: '#e60070'
+    },
+    background: {
+      default: '#161b22'
+    }
+  },
+  // transitions: {
+  //   duration: {
+  //     enteringScreen: 5000,
+  //     leavingScreen: 5000
   //   }
   // },
-  overrides: {
-    MuiListItem: {
-      gutters: {
-        [defaultTheme.breakpoints.up('sm')]: {
-          paddingLeft: "24px"
+  components: {
+    MuiPaper: {
+      styleOverrides: {
+        root: {
+          backgroundColor: '#344050',
+          transition: 'none',
+          WebkitTransition: 'none',
+          color: '#b4c0cf'
+        }
+      }
+    },
+    MuiButton: {
+      styleOverrides: {
+        root: {
+          padding: "8px"
         }
       }
     }
   }
 });
 
+theme.components.MuiPaper.styleOverrides.root.transition = theme.transitions.create('width', {
+  easing: theme.transitions.easing.sharp,
+  duration: theme.transitions.duration.standard,
+})
+theme.components.MuiPaper.styleOverrides.root.WebkitTransition = theme.transitions.create('width', {
+  easing: theme.transitions.easing.sharp,
+  duration: theme.transitions.duration.standard,
+})
 export default class App extends Component {
   constructor(props) {
     super(props);
@@ -38,7 +67,6 @@ export default class App extends Component {
   render() {
     return (
       <ThemeProvider theme={theme}>
-        {console.log(theme)}
         <Default />
       </ThemeProvider>
     )

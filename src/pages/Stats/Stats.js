@@ -1,14 +1,8 @@
 import React, { Component } from 'react'
-import { withStyles } from '@material-ui/core'
 import privateData from '../../private/secret.json'
 import ApiRequest from '../../helper/ApiRequest';
-const useStyles = (theme) => ({
-    container: {
 
-    },
-});
-
-class Stats extends Component {
+export default class Stats extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -30,6 +24,4 @@ class Stats extends Component {
         )
     }
 }
-
-export default withStyles(useStyles)(Stats)
 

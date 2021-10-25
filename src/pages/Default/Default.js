@@ -1,23 +1,24 @@
 import React from 'react';
-import clsx from 'clsx';
 
-import Drawer from '@material-ui/core/Drawer';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import List from '@material-ui/core/List';
-import Divider from '@material-ui/core/Divider';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
-import { Paper, withStyles } from '@material-ui/core'
 
-import AccountBoxIcon from '@material-ui/icons/AccountBox';
-import SportsEsportsIcon from '@material-ui/icons/SportsEsports';
-import FunctionsIcon from '@material-ui/icons/Functions';
-import ContactMailIcon from '@material-ui/icons/ContactMail';
-import MenuIcon from '@material-ui/icons/Menu';
-import MenuOpenIcon from '@material-ui/icons/MenuOpen';
+import Drawer from '@mui/material/Drawer';
+import CssBaseline from '@mui/material/CssBaseline';
+import List from '@mui/material/List';
+import Divider from '@mui/material/Divider';
+import ListItem from '@mui/material/ListItem';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import ListItemText from '@mui/material/ListItemText';
+import Paper from '@mui/material/Paper';
+import { withStyles } from '@mui/styles';
 
-import { Container } from '@material-ui/core';
+// import AccountBoxIcon from '@mui/icons-material/AccountBox';
+// import SportsEsportsIcon from '@mui/icons-material/SportsEsports';
+import FunctionsIcon from '@mui/icons-material/Functions';
+import ContactMailIcon from "@mui/icons-material/ContactMail";
+import MenuIcon from '@mui/icons-material/Menu';
+import MenuOpenIcon from '@mui/icons-material/MenuOpen';
+
+import Container from '@mui/material/Container';
 
 import {
     BrowserRouter as Router,
@@ -27,8 +28,8 @@ import {
     Redirect
 } from "react-router-dom";
 
-import About from '../About/About';
-import Stats from '../Stats/Stats';
+// import About from '../About/About';
+// import Stats from '../Stats/Stats';
 import Socials from '../Socials/Socials';
 import Vitals from '../Vitals/Vitals';
 import Algos from '../Algos/Algos'
@@ -37,7 +38,7 @@ import { Component } from 'react';
 
 
 const drawerWidth = 240;
-const useStyles = (theme) => ({
+const styles = theme => ({
     root: {
         display: 'flex',
     },
@@ -49,29 +50,25 @@ const useStyles = (theme) => ({
         width: drawerWidth,
         flexShrink: 0,
     },
+
     drawerOpen: {
         width: drawerWidth,
         transition: theme.transitions.create('width', {
             easing: theme.transitions.easing.sharp,
-            duration: theme.transitions.duration.enteringScreen,
+            duration: theme.transitions.duration.standard,
         }),
-    },
+        overflowX: 'hidden',
+  },
     drawerClose: {
         transition: theme.transitions.create('width', {
             easing: theme.transitions.easing.sharp,
-            duration: theme.transitions.duration.leavingScreen,
+            duration: theme.transitions.duration.standard,
+
         }),
         overflowX: 'hidden',
-        width: theme.spacing(7) + 1,
-        [theme.breakpoints.up('sm')]: {
-            width: theme.spacing(9) + 1,
-        },
-    },
-    drawerPaper: {
-        width: drawerWidth,
-    },
-    // necessary for content to be below app bar
-    toolbar: theme.mixins.toolbar,
+        width: `calc(${theme.spacing(7)} + 1px)`,
+      },
+
     content: {
         flexGrow: 1,
         backgroundColor: theme.palette.background.default,
@@ -89,9 +86,9 @@ const useStyles = (theme) => ({
 
 const itemList = [ // 0 index will be default path for "/"
     // { Text: 'About Me', Icon: <AccountBoxIcon />, path: "/about" },
-    { Text: 'Socials', Icon: <ContactMailIcon />, path: "/socials" },
+    { Text: 'Socials', Icon: <ContactMailIcon color="primary" />, path: "/socials" },
     // { Text: 'Stats', Icon: <SportsEsportsIcon />, path: "/stats" },
-    { Text: 'Algos', Icon: <FunctionsIcon />, path: "/algos" }
+    { Text: 'Algo Visualizer', Icon: <FunctionsIcon color="primary" />, path: "/algos" }
 ];
 class Default extends Component {
     constructor(props) {
@@ -111,30 +108,22 @@ class Default extends Component {
                 <CssBaseline />
                 <Router>
                     <Drawer
-                        variant="permanent"
-                        className={clsx(classes.drawer, {
-                            [classes.drawerOpen]: this.state.drawerOpen,
-                            [classes.drawerClose]: !this.state.drawerOpen,
-                        })}
+                        className={(this.state.drawerOpen) ? classes.drawerOpen + ' ' + classes.drawer : classes.drawerClose + ' ' + classes.drawer}
                         classes={{
-                            paper: clsx({
-                                [classes.drawerOpen]: this.state.drawerOpen,
-                                [classes.drawerClose]: !this.state.drawerOpen,
-                            }),
+                            paper: (this.state.drawerOpen) ? classes.drawerOpen + ' ' + classes.drawer : classes.drawerClose + ' ' + classes.drawer
                         }}
-                    >
+                        transitionDuration={{ enter: 2000, exit: 2000 }}
+                        variant="permanent" open={this.state.drawerOpen} >
                         <List>
                             <ListItem button onClick={this.toggleDrawer}>
-                                <ListItemIcon>{(!this.state.drawerOpen) ? <MenuIcon /> : <MenuOpenIcon />}</ListItemIcon>
+                                <ListItemIcon>{(!this.state.drawerOpen) ? <MenuIcon color="primary" /> : <MenuOpenIcon color="primary" />}</ListItemIcon>
                                 <ListItemText className={classes.title} primary="Toxey.Dev" />
                             </ListItem>
                         </List>
-
                         <Divider />
-
                         <List>
                             {itemList.map((obj, i) => (
-                                <Link to={obj.path} key={i} style={{ textDecoration: 'none', color: 'inherit' }}>
+                                <Link to={obj.path} key={i} style={{ textDecoration: 'none', color: '#b4c0cf' }}>
                                     <ListItem button key={obj.Text}>
                                         <ListItemIcon>{obj.Icon}</ListItemIcon>
                                         <ListItemText primary={obj.Text} />
@@ -179,4 +168,4 @@ class Default extends Component {
 
 }
 
-export default withStyles(useStyles)(Default)
+export default withStyles(styles, { withTheme: true })(Default)

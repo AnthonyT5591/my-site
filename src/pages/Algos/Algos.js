@@ -6,13 +6,15 @@ import {
   FormLabel,
   RadioGroup,
   FormControlLabel,
-} from "@material-ui/core";
+} from "@mui/material";
 
+// icons for buttons and chips
 import ShuffleIcon from "@mui/icons-material/Shuffle";
 import CheckCircleOutlinedIcon from "@mui/icons-material/CheckCircleOutlined";
 import ErrorOutlineOutlinedIcon from "@mui/icons-material/ErrorOutlineOutlined";
 import BubbleChartOutlinedIcon from "@mui/icons-material/BubbleChartOutlined";
 import TouchAppOutlinedIcon from "@mui/icons-material/TouchAppOutlined";
+import AddCircleOutlineOutlinedIcon from "@mui/icons-material/AddCircleOutlineOutlined";
 
 // icons used to display data
 import CoronavirusIcon from "@mui/icons-material/Coronavirus";
@@ -28,7 +30,6 @@ import CakeIcon from "@mui/icons-material/Cake";
 
 import Chip from "@mui/material/Chip";
 import LinearProgress from "@mui/material/LinearProgress";
-import CircularProgress from "@mui/material/CircularProgress";
 import { Flipper, Flipped } from "react-flip-toolkit";
 
 import { flash } from "react-animations";
@@ -151,17 +152,19 @@ export default class Algos extends Component {
   constructor() {
     super();
     this.state = {
-      numberOfCases: 20,
+      numberOfCases: 15,
+      delay: 1000,
       dataSet: [],
       animation: styles.animation,
       count: 0,
       numOne: null,
       numTwo: null,
-      selectedPresentationRadio: "horizontal_bar_graph",
+      selectedPresentationRadio: "vertical_bar_graph",
       selectedColorRadio: "default",
       doinThings: false,
       currentAlgo: "",
       currentAlgoIcon: null,
+      currentAlgoColor: null,
       _algos: [
         {
           text: "Fisher Yates Shuffle",
@@ -177,6 +180,7 @@ export default class Algos extends Component {
           },
           type: 0, // 0 for shuffle, 1 for sort
           icon: <ShuffleIcon />,
+          color: "info",
           disabledCondition: (sorted, doinThings) => {
             return !sorted || doinThings ? true : false;
           },
@@ -184,7 +188,7 @@ export default class Algos extends Component {
         {
           text: "Bubble Sort",
           func: (index) => {
-            if (index + 1 == this.state.dataSet.length)
+            if (index + 1 === this.state.dataSet.length)
               return [...this.state.dataSet];
 
             this.setState({
@@ -199,6 +203,7 @@ export default class Algos extends Component {
           },
           type: 1,
           icon: <BubbleChartOutlinedIcon />,
+          color: "secondary",
           disabledCondition: (sorted, doinThings) => {
             return sorted || doinThings ? true : false;
           },
@@ -221,37 +226,41 @@ export default class Algos extends Component {
           },
           type: 1,
           icon: <TouchAppOutlinedIcon />,
+          color: "secondary",
           disabledCondition: (sorted, doinThings) => {
             return sorted || doinThings ? true : false;
           },
         },
-        // {
-        //   text: "Insert Sort",
-        //   func: (index) => {
-        //     if (index == 0) return [...this.state.dataSet];
+        {
+          text: "Insert Sort",
+          func: (index) => {
+            if (index === 0) return [...this.state.dataSet];
 
-        //     for (let i = index; i < this.state.dataSet.length; i++) {
-        //       if (this.state.dataSet[index - 1] > this.state.dataSet[index]) {
-        //          this.swap(index, index - 1);
-        //       } 
-        //     }
-        //     this.setState({
-        //       numOne: index,
-        //       numTwo: index - 1,
-        //     });
+            let insertIndex = index;
+            for (let i = index; i >= 0; i--) {
+              if (this.state.dataSet[i - 1] > this.state.dataSet[index]) {
+                insertIndex = i - 1;
+              }
+            }
+            let returnArray = [...this.state.dataSet];
 
-        //     // if (this.state.dataSet[index - 1] > this.state.dataSet[index]) {
-        //     //   return this.swap(index, index - 1);
-        //     // } else {
-        //     //   return [...this.state.dataSet];
-        //     // }
-        //   },
-        //   type: 1,
-        //   icon: <TouchAppOutlinedIcon />,
-        //   disabledCondition: (sorted, doinThings) => {
-        //     return sorted || doinThings ? true : false;
-        //   },
-        // },
+            // insert then delete
+            returnArray.splice(insertIndex, 0, this.state.dataSet[index]);
+            returnArray.splice(index + 1, 1);
+
+            this.setState({
+              numOne: insertIndex - 1,
+              numTwo: insertIndex,
+            });
+            return returnArray;
+          },
+          type: 1,
+          icon: <AddCircleOutlineOutlinedIcon />,
+          color: "secondary",
+          disabledCondition: (sorted, doinThings) => {
+            return sorted || doinThings ? true : false;
+          },
+        },
       ],
       _presentations: {
         vertical_bar_graph: {
@@ -324,12 +333,13 @@ export default class Algos extends Component {
     return tempArray;
   }
 
-  triggerAnimate(algoFunc, funcType, displayName, algoIcon) {
+  triggerAnimate(algoFunc, funcType, displayName, algoIcon, algoColor) {
     this.setState({
       count: 0,
       doinThings: true,
       currentAlgo: displayName,
       currentAlgoIcon: algoIcon,
+      currentAlgoColor: algoColor,
     });
 
     this.startAlgo(algoFunc, funcType);
@@ -337,7 +347,7 @@ export default class Algos extends Component {
 
   isSorted(data) {
     return (
-      JSON.stringify([...data].sort((a, b) => a - b)) ==
+      JSON.stringify([...data].sort((a, b) => a - b)) ===
       JSON.stringify([...data])
     );
   }
@@ -347,8 +357,8 @@ export default class Algos extends Component {
 
     // reset values after completing sort or shuffle
     if (
-      (funcType == 0 && count === dataSet.length - 1) ||
-      (funcType == 1 && this.isSorted(this.state.dataSet))
+      (funcType === 0 && count === dataSet.length - 1) ||
+      (funcType === 1 && this.isSorted(this.state.dataSet))
     ) {
       this.setState({
         count: 0,
@@ -362,13 +372,13 @@ export default class Algos extends Component {
     this.setState({
       animation: animation,
       dataSet: algoFunc(count),
-      count: count == dataSet.length - 1 ? 0 : count + 1,
+      count: count === dataSet.length - 1 ? 0 : count + 1,
     });
 
     // TODO: bug with after sorting, shuffle doesnt start at beginning
     setTimeout(() => {
       this.startAlgo(algoFunc, funcType);
-    }, 1000);
+    }, this.state.delay);
   }
 
   handlePresentationRadioChange(event) {
@@ -394,6 +404,7 @@ export default class Algos extends Component {
       doinThings,
       currentAlgo,
       currentAlgoIcon,
+      currentAlgoColor,
       _presentations,
     } = this.state;
 
@@ -406,7 +417,7 @@ export default class Algos extends Component {
         <Flipped key={Math.random()} flipId={c}>
           <div
             className={css(
-              i == numOne || i == numTwo ? animation : "",
+              i === numOne || i === numTwo ? animation : "",
               _presentations[selectedPresentationRadio].element_styles
             )}
             style={_presentations[selectedPresentationRadio].calculated_styles(
@@ -424,11 +435,12 @@ export default class Algos extends Component {
     this.state._algos.forEach((c) => {
       algoButtons.push(
         <Button
+          key={c.text}
           onClick={() => {
-            this.triggerAnimate(c.func, c.type, c.text, c.icon);
+            this.triggerAnimate(c.func, c.type, c.text, c.icon, c.color);
           }}
           variant="contained"
-          color="primary"
+          color={c.color}
           startIcon={c.icon}
           className={css(styles.button)}
           disabled={c.disabledCondition(sorted, doinThings)}
@@ -484,7 +496,7 @@ export default class Algos extends Component {
           {currentAlgo ? (
             <Chip
               className={css(styles.chips)}
-              color="primary"
+              color={currentAlgoColor}
               icon={currentAlgoIcon}
               label={currentAlgo}
             />
@@ -495,7 +507,7 @@ export default class Algos extends Component {
         {currentAlgo ? (
           <LinearProgress
             className={css(styles.progressBar)}
-            color="secondary"
+            color={currentAlgoColor}
           />
         ) : (
           <div></div>
@@ -503,7 +515,9 @@ export default class Algos extends Component {
 
         <div className={css(styles.presentation_container)}>
           <FormControl component="fieldset">
-            <FormLabel component="legend">Presentation</FormLabel>
+            <FormLabel component="legend" style={{ color: "#00e676" }}>
+              Presentation
+            </FormLabel>
             <RadioGroup
               row
               aria-label="presentation"
@@ -518,10 +532,12 @@ export default class Algos extends Component {
 
         <div className={css(styles.color_container)}>
           <FormControl component="fieldset">
-            <FormLabel component="legend">Color</FormLabel>
+            <FormLabel component="legend" style={{ color: "#00e676" }}>
+              Color
+            </FormLabel>
             <RadioGroup
               row
-              aria-label="presentation"
+              aria-label="color"
               name="controlled-radio-buttons-group"
               value={selectedColorRadio}
               onChange={this.handleColorRadioChange}
