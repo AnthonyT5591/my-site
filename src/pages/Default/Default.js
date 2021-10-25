@@ -1,6 +1,6 @@
 import React from 'react';
 
-
+import logo from '../../logo.png'
 import Drawer from '@mui/material/Drawer';
 import CssBaseline from '@mui/material/CssBaseline';
 import List from '@mui/material/List';
@@ -58,7 +58,7 @@ const styles = theme => ({
             duration: theme.transitions.duration.standard,
         }),
         overflowX: 'hidden',
-  },
+    },
     drawerClose: {
         transition: theme.transitions.create('width', {
             easing: theme.transitions.easing.sharp,
@@ -67,7 +67,7 @@ const styles = theme => ({
         }),
         overflowX: 'hidden',
         width: `calc(${theme.spacing(7)} + 1px)`,
-      },
+    },
 
     content: {
         flexGrow: 1,
@@ -81,7 +81,9 @@ const styles = theme => ({
         fontSize: "20px",
         textDecoration: "underline"
     },
-
+    logo_img: {
+        width: "100px"
+    }
 });
 
 const itemList = [ // 0 index will be default path for "/"
@@ -117,7 +119,9 @@ class Default extends Component {
                         <List>
                             <ListItem button onClick={this.toggleDrawer}>
                                 <ListItemIcon>{(!this.state.drawerOpen) ? <MenuIcon color="primary" /> : <MenuOpenIcon color="primary" />}</ListItemIcon>
-                                <ListItemText className={classes.title} primary="Toxey.Dev" />
+                                {/* <ListItemText className={classes.title} primary="Toxey.Dev" />
+                                 */}
+                                <img className={classes.logo_img} src={logo} />
                             </ListItem>
                         </List>
                         <Divider />
