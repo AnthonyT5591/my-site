@@ -17,6 +17,9 @@ import LinkedInIcon from '@mui/icons-material/LinkedIn';
 import { StyleSheet, css } from "aphrodite";
 
 const styles = StyleSheet.create({
+    title_container: {
+        marginBottom: "10px",
+    },
     socials_container: {
         borderRadius: "10px",
     },
