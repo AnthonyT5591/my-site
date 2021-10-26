@@ -9,7 +9,7 @@ import ListItem from '@mui/material/ListItem';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import Paper from '@mui/material/Paper';
-import { withStyles } from '@mui/styles';
+import { withTheme } from '@mui/styles';
 
 // import AccountBoxIcon from '@mui/icons-material/AccountBox';
 // import SportsEsportsIcon from '@mui/icons-material/SportsEsports';
@@ -35,56 +35,8 @@ import Vitals from '../Vitals/Vitals';
 import Algos from '../Algos/Algos'
 
 import { Component } from 'react';
+import { StyleSheet, css } from "aphrodite";
 
-
-const drawerWidth = 240;
-const styles = theme => ({
-    root: {
-        display: 'flex',
-    },
-    appBar: {
-        width: `calc(100% - ${drawerWidth}px)`,
-        marginLeft: drawerWidth,
-    },
-    drawer: {
-        width: drawerWidth,
-        flexShrink: 0,
-    },
-
-    drawerOpen: {
-        width: drawerWidth,
-        transition: theme.transitions.create('width', {
-            easing: theme.transitions.easing.sharp,
-            duration: theme.transitions.duration.standard,
-        }),
-        overflowX: 'hidden',
-    },
-    drawerClose: {
-        transition: theme.transitions.create('width', {
-            easing: theme.transitions.easing.sharp,
-            duration: theme.transitions.duration.standard,
-
-        }),
-        overflowX: 'hidden',
-        width: `calc(${theme.spacing(7)} + 1px)`,
-    },
-
-    content: {
-        flexGrow: 1,
-        backgroundColor: theme.palette.background.default,
-        padding: theme.spacing(3),
-    },
-    paperPadding: {
-        padding: "20px"
-    },
-    title: {
-        fontSize: "20px",
-        textDecoration: "underline"
-    },
-    logo_img: {
-        width: "100px"
-    }
-});
 
 const itemList = [ // 0 index will be default path for "/"
     // { Text: 'About Me', Icon: <AccountBoxIcon />, path: "/about" },
@@ -96,7 +48,8 @@ class Default extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            drawerOpen: false
+            drawerOpen: false,
+            version: 'v1.0.2'
         }
         this.toggleDrawer = this.toggleDrawer.bind(this);
     }
@@ -104,24 +57,100 @@ class Default extends Component {
         this.setState({ drawerOpen: !this.state.drawerOpen })
     }
     render() {
-        const { classes } = this.props;
+        const { theme } = this.props;
+        const drawerWidth = 240;
+        const styles = StyleSheet.create({
+            root: {
+                display: 'flex',
+                [theme.breakpoints.down('lg')]: {
+                    flexDirection: 'column'
+                }
+            },
+            drawer: {
+                width: drawerWidth,
+                height: '100vh',
+                flexShrink: 0,
+                [theme.breakpoints.down('lg')]: {
+                    height: `calc(${theme.spacing(10) + theme.spacing(itemList.length)} + 1px)`,
+
+                    height: `calc(${theme.spacing(12 * itemList.length)} + 1px)`,
+                    width: "100%",
+                }
+            },
+
+            drawerOpen: {
+                transition: theme.transitions.create('width', {
+                    easing: theme.transitions.easing.sharp,
+                    duration: theme.transitions.duration.standard,
+                }),
+                overflowX: 'hidden',
+                [theme.breakpoints.down('lg')]: {
+                    transition: theme.transitions.create('height', {
+                        easing: theme.transitions.easing.sharp,
+                        duration: theme.transitions.duration.standard,
+                    }),
+                    overflowY: 'hidden',
+                }
+
+            },
+            drawerClose: {
+                transition: theme.transitions.create('width', {
+                    easing: theme.transitions.easing.sharp,
+                    duration: theme.transitions.duration.standard,
+                }),
+                overflowX: 'hidden',
+                width: `calc(${theme.spacing(7)} + 1px)`,
+                [theme.breakpoints.down('lg')]: {
+                    transition: theme.transitions.create('height', {
+                        easing: theme.transitions.easing.sharp,
+                        duration: theme.transitions.duration.standard,
+                    }),
+                    overflowY: 'hidden',
+                    height: `calc(${theme.spacing(10)} + 1px)`,
+                    width: "100%",
+                }
+            },
+            content: {
+                flexGrow: 1,
+                backgroundColor: theme.palette.background.default,
+                padding: theme.spacing(3),
+            },
+            paperPadding: {
+                padding: "20px"
+            },
+            title: {
+                fontSize: "20px",
+                textDecoration: "underline"
+            },
+            logo_img: {
+                width: "5rem",
+                marginRight: "1rem"
+            },
+            versionText: {
+                fontSize: '14px'
+            }
+        });
+
         return (
-            <div className={classes.root} >
+            <div className={css(styles.root)} >
                 <CssBaseline />
                 <Router>
                     <Drawer
-                        className={(this.state.drawerOpen) ? classes.drawerOpen + ' ' + classes.drawer : classes.drawerClose + ' ' + classes.drawer}
+                        className={(this.state.drawerOpen) ? css(styles.drawer, styles.drawerOpen) : css(styles.drawer, styles.drawerClose)}
                         classes={{
-                            paper: (this.state.drawerOpen) ? classes.drawerOpen + ' ' + classes.drawer : classes.drawerClose + ' ' + classes.drawer
+                            paper: (this.state.drawerOpen) ? css(styles.drawer, styles.drawerOpen) : css(styles.drawer, styles.drawerClose)
                         }}
+                        anchor={theme.breakpoints.down('lg') ? 'top' : 'left'}
                         transitionDuration={{ enter: 2000, exit: 2000 }}
-                        variant="permanent" open={this.state.drawerOpen} >
+                        variant="permanent"
+                        open={this.state.drawerOpen} >
                         <List>
                             <ListItem button onClick={this.toggleDrawer}>
                                 <ListItemIcon>{(!this.state.drawerOpen) ? <MenuIcon color="primary" /> : <MenuOpenIcon color="primary" />}</ListItemIcon>
                                 {/* <ListItemText className={classes.title} primary="Toxey.Dev" />
                                  */}
-                                <img className={classes.logo_img} src={logo} />
+                                <img alt="bruh its my logo" className={css(styles.logo_img)} src={logo} />
+                                <div className={css(styles.versionText)}>{this.state.version}</div>
                             </ListItem>
                         </List>
                         <Divider />
@@ -137,8 +166,8 @@ class Default extends Component {
                         </List>
                     </Drawer>
 
-                    <main className={classes.content}>
-                        <Paper elevation={3} className={classes.paperPadding}>
+                    <main className={css(styles.content)}>
+                        <Paper elevation={3} className={css(styles.paperPadding)}>
                             <Container maxWidth={false} disableGutters={true}>
                                 <div className="app-content">
                                     <Switch>
@@ -172,4 +201,4 @@ class Default extends Component {
 
 }
 
-export default withStyles(styles, { withTheme: true })(Default)
+export default withTheme(Default)

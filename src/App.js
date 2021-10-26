@@ -3,7 +3,8 @@ import { Component } from 'react';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Default from './pages/Default/Default';
 
-const theme = createTheme({
+let theme = createTheme();
+theme = createTheme({
   palette: {
     primary: {
       main: '#b4c0cf',
@@ -23,40 +24,62 @@ const theme = createTheme({
 
   },
   components: {
+    MuiDrawer: {
+      styleOverrides: {
+        paper: {
+          position: 'relative',
+          overflowY: 'hidden',
+          // height: 'inherit',
+          transition: theme.transitions.create('width', {
+            easing: theme.transitions.easing.sharp,
+            duration: theme.transitions.duration.standard,
+          }),
+          WebkitTransition: theme.transitions.create('width', {
+            easing: theme.transitions.easing.sharp,
+            duration: theme.transitions.duration.standard,
+          }),
+        },
+        [theme.breakpoints.down('lg')]: {
+          paper: {
+            transition: theme.transitions.create('height', {
+              easing: theme.transitions.easing.sharp,
+              duration: theme.transitions.duration.standard,
+            }),
+            WebkitTransition: theme.transitions.create('height', {
+              easing: theme.transitions.easing.sharp,
+              duration: theme.transitions.duration.standard,
+            }),
+          }
+        },
+
+      }
+    },
     MuiPaper: {
       styleOverrides: {
         root: {
           backgroundColor: '#344050',
-          transition: 'none',
-          WebkitTransition: 'none',
           color: '#b4c0cf'
         }
       }
     },
-    MuiButton: {
+    // MuiButton: {
+    //   styleOverrides: {
+    //     root: {
+    //       padding: "8px"
+    //     }
+    //   }
+    // },
+    MuiListItem: {
       styleOverrides: {
         root: {
-          padding: "8px"
+          justifyContent: "space-between"
         }
       }
     }
   }
 });
 
-theme.components.MuiPaper.styleOverrides.root.transition = theme.transitions.create('width', {
-  easing: theme.transitions.easing.sharp,
-  duration: theme.transitions.duration.standard,
-})
-theme.components.MuiPaper.styleOverrides.root.WebkitTransition = theme.transitions.create('width', {
-  easing: theme.transitions.easing.sharp,
-  duration: theme.transitions.duration.standard,
-})
 export default class App extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-    };
-  }
   render() {
     return (
       <ThemeProvider theme={theme}>

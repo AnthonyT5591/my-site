@@ -33,8 +33,10 @@ import Chip from "@mui/material/Chip";
 import LinearProgress from "@mui/material/LinearProgress";
 import { Flipper, Flipped } from "react-flip-toolkit";
 
+import { withTheme } from '@mui/styles';
 import { flash } from "react-animations";
 import { StyleSheet, css } from "aphrodite";
+
 
 const styles = StyleSheet.create({
   animation: {
@@ -42,17 +44,19 @@ const styles = StyleSheet.create({
     animationDuration: "1s",
   },
   vertical_bar_graph: {
-    padding: "5px 10px",
+    padding: "5px",
     borderRadius: "10px",
-    margin: "1px",
-    minWidth: "20px",
+    // margin: "1px",
+    margin: ".5px",
+    minWidth: "10px",
     display: "flex",
     flexDirection: "column",
     justifyContent: "space-between",
     alignItems: "center",
   },
   horizontal_bar_graph: {
-    padding: "5px 10px",
+    // padding: "5px 10px",
+    padding: "0px 10px",
     borderRadius: "10px",
     margin: "1px 0px",
     display: "flex",
@@ -71,16 +75,25 @@ const styles = StyleSheet.create({
     alignItems: "baseline",
   },
   display_container: {
+    height: 'auto',
     marginBottom: "20px",
   },
-  presentation_container: {
+  options_container: {
+    display: "flex",
+    justifyContent: "flex-start",
     marginBottom: "20px",
   },
   vertical_container: {
     display: "flex",
     justifyContent: "center",
     alignItems: "flex-end",
-    height: "500px",
+    height: "25rem",
+    overflowX: 'auto'
+  },
+  button_container: {
+    display: 'flex',
+    justifyContent: 'center',
+    flexWrap: 'wrap'
   },
   button: {
     margin: "5px",
@@ -152,9 +165,9 @@ const _icons = [
   <BuildIcon fontSize="small" />,
   <CakeIcon fontSize="small" />,
 ];
-export default class Algos extends Component {
-  constructor() {
-    super();
+class Algos extends Component {
+  constructor(props) {
+    super(props);
     this.state = {
       numberOfCases: 15,
       delay: 1000,
@@ -172,15 +185,17 @@ export default class Algos extends Component {
       _algos: [
         {
           text: "Fisher Yates Shuffle",
-          func: (index) => {
+          func: (index, dataArray) => {
             let randomNum = Math.floor(
-              Math.random() * (this.state.dataSet.length - index) + index
+              Math.random() * (dataArray.length - index) + index
             );
-            this.setState({
+
+            let returnObj = {
               numOne: index,
               numTwo: randomNum,
-            });
-            return this.swap(index, randomNum);
+              dataSet: this.swap(index, randomNum)
+            }
+            return returnObj;
           },
           type: 0, // 0 for shuffle, 1 for sort
           icon: <ShuffleIcon />,
@@ -191,19 +206,21 @@ export default class Algos extends Component {
         },
         {
           text: "Bubble Sort",
-          func: (index) => {
-            if (index + 1 === this.state.dataSet.length)
-              return [...this.state.dataSet];
+          func: (index, dataArray) => {
+            let returnObj = {
+              numOne: null,
+              numTwo: null,
+              dataSet: dataArray
+            }
+            if (index === dataArray.length - 1)
+              return returnObj;
 
-            this.setState({
+            returnObj = {
               numOne: index,
               numTwo: index + 1,
-            });
-            if (this.state.dataSet[index] > this.state.dataSet[index + 1]) {
-              return this.swap(index, index + 1);
-            } else {
-              return [...this.state.dataSet];
+              dataSet: (dataArray[index] > dataArray[index + 1]) ? this.swap(index, index + 1) : [...dataArray]
             }
+            return returnObj
           },
           type: 1,
           icon: <BubbleChartOutlinedIcon />,
@@ -214,19 +231,21 @@ export default class Algos extends Component {
         },
         {
           text: "Selection Sort",
-          func: (index) => {
+          func: (index, dataArray) => {
             let minNumIndex = index;
-            for (let i = index; i < this.state.dataSet.length; i++) {
-              if (this.state.dataSet[minNumIndex] > this.state.dataSet[i]) {
+            for (let i = index; i < dataArray.length; i++) {
+              if (dataArray[minNumIndex] > dataArray[i]) {
                 minNumIndex = i;
               }
             }
-            this.setState({
+
+            const returnObj = {
               numOne: index,
               numTwo: minNumIndex,
-            });
+              dataSet: this.swap(index, minNumIndex)
+            }
 
-            return this.swap(index, minNumIndex);
+            return returnObj;
           },
           type: 1,
           icon: <TouchAppOutlinedIcon />,
@@ -237,26 +256,32 @@ export default class Algos extends Component {
         },
         {
           text: "Insert Sort",
-          func: (index) => {
-            if (index === 0) return [...this.state.dataSet];
+          func: (index, dataArray) => {
+            let returnObj = {
+              numOne: null,
+              numTwo: null,
+              dataSet: dataArray
+            }
+            if (index === 0) return returnObj;
 
             let insertIndex = index;
             for (let i = index; i >= 0; i--) {
-              if (this.state.dataSet[i - 1] > this.state.dataSet[index]) {
+              if (dataArray[i - 1] > dataArray[index]) {
                 insertIndex = i - 1;
               }
             }
-            let returnArray = [...this.state.dataSet];
+            let returnArray = [...dataArray];
 
             // insert then delete
-            returnArray.splice(insertIndex, 0, this.state.dataSet[index]);
+            returnArray.splice(insertIndex, 0, dataArray[index]);
             returnArray.splice(index + 1, 1);
 
-            this.setState({
+            returnObj = {
               numOne: insertIndex - 1,
               numTwo: insertIndex,
-            });
-            return returnArray;
+              dataSet: returnArray
+            }
+            return returnObj;
           },
           type: 1,
           icon: <AddCircleOutlineOutlinedIcon />,
@@ -272,20 +297,18 @@ export default class Algos extends Component {
           element_styles: styles.vertical_bar_graph,
           calculated_styles: (c, dataSet) => {
             return {
-              background: `${
-                _colors[this.state.selectedColorRadio].colors[
-                  c % _colors[this.state.selectedColorRadio].colors.length
-                ].main
-              }`,
-              color: `${
-                _colors[this.state.selectedColorRadio].colors[
-                  c % _colors[this.state.selectedColorRadio].colors.length
-                ].accent
-              }`,
+              background: `${_colors[this.state.selectedColorRadio].colors[
+                c % _colors[this.state.selectedColorRadio].colors.length
+              ].main
+                }`,
+              color: `${_colors[this.state.selectedColorRadio].colors[
+                c % _colors[this.state.selectedColorRadio].colors.length
+              ].accent
+                }`,
               minHeight: `${(c / dataSet.length) * 100}%`,
             };
           },
-          text: "Vertical Bar Graph",
+          text: "Vertical",
           value: "vertical_bar_graph",
         },
         horizontal_bar_graph: {
@@ -293,20 +316,18 @@ export default class Algos extends Component {
           element_styles: styles.horizontal_bar_graph,
           calculated_styles: (c, dataSet) => {
             return {
-              background: `${
-                _colors[this.state.selectedColorRadio].colors[
-                  c % _colors[this.state.selectedColorRadio].colors.length
-                ].main
-              }`,
-              color: `${
-                _colors[this.state.selectedColorRadio].colors[
-                  c % _colors[this.state.selectedColorRadio].colors.length
-                ].accent
-              }`,
+              background: `${_colors[this.state.selectedColorRadio].colors[
+                c % _colors[this.state.selectedColorRadio].colors.length
+              ].main
+                }`,
+              color: `${_colors[this.state.selectedColorRadio].colors[
+                c % _colors[this.state.selectedColorRadio].colors.length
+              ].accent
+                }`,
               minWidth: `${(c / dataSet.length) * 100}%`,
             };
           },
-          text: "Horizontal Bar Graph",
+          text: "Horizontal",
           value: "horizontal_bar_graph",
         },
       },
@@ -362,7 +383,7 @@ export default class Algos extends Component {
     // reset values after completing sort or shuffle
     if (
       (funcType === 0 && count === dataSet.length - 1) ||
-      (funcType === 1 && this.isSorted(this.state.dataSet))
+      (funcType === 1 && this.isSorted(dataSet))
     ) {
       this.setState({
         count: 0,
@@ -373,9 +394,12 @@ export default class Algos extends Component {
       });
       return;
     }
+    let algoResult = algoFunc(count, [...dataSet]);
     this.setState({
       animation: animation,
-      dataSet: algoFunc(count),
+      numOne: algoResult.numOne,
+      numTwo: algoResult.numTwo,
+      dataSet: algoResult.dataSet,
       count: count === dataSet.length - 1 ? 0 : count + 1,
     });
 
@@ -411,7 +435,7 @@ export default class Algos extends Component {
       currentAlgoColor,
       _presentations,
     } = this.state;
-
+    const { theme } = this.props;
     const sorted = this.isSorted(dataSet);
 
     let displayData = [];
@@ -429,7 +453,8 @@ export default class Algos extends Component {
               dataSet
             )}
           >
-            {c} {_icons[c % _icons.length]}
+            {c}
+            {_icons[c % _icons.length]}
           </div>
         </Flipped>
       );
@@ -520,41 +545,41 @@ export default class Algos extends Component {
         ) : (
           <div></div>
         )}
+        <div className={css(styles.options_container)}>
+          <div>
+            <FormControl style={{ marginRight: "40px" }} component="fieldset">
+              <FormLabel component="legend" style={{ color: "#00e676" }}>
+                Presentation
+              </FormLabel>
+              <RadioGroup
+                row
+                aria-label="presentation"
+                name="controlled-radio-buttons-group"
+                value={selectedPresentationRadio}
+                onChange={this.handlePresentationRadioChange}
+              >
+                {presentationRadios}
+              </RadioGroup>
+            </FormControl>
+          </div>
 
-        <div className={css(styles.presentation_container)}>
-          <FormControl component="fieldset">
-            <FormLabel component="legend" style={{ color: "#00e676" }}>
-              Presentation
-            </FormLabel>
-            <RadioGroup
-              row
-              aria-label="presentation"
-              name="controlled-radio-buttons-group"
-              value={selectedPresentationRadio}
-              onChange={this.handlePresentationRadioChange}
-            >
-              {presentationRadios}
-            </RadioGroup>
-          </FormControl>
+          <div>
+            <FormControl style={{ marginRight: "40px" }} component="fieldset">
+              <FormLabel component="legend" style={{ color: "#00e676" }}>
+                Color
+              </FormLabel>
+              <RadioGroup
+                row
+                aria-label="color"
+                name="controlled-radio-buttons-group"
+                value={selectedColorRadio}
+                onChange={this.handleColorRadioChange}
+              >
+                {colorRadios}
+              </RadioGroup>
+            </FormControl>
+          </div>
         </div>
-
-        <div className={css(styles.color_container)}>
-          <FormControl component="fieldset">
-            <FormLabel component="legend" style={{ color: "#00e676" }}>
-              Color
-            </FormLabel>
-            <RadioGroup
-              row
-              aria-label="color"
-              name="controlled-radio-buttons-group"
-              value={selectedColorRadio}
-              onChange={this.handleColorRadioChange}
-            >
-              {colorRadios}
-            </RadioGroup>
-          </FormControl>
-        </div>
-
         <div className={css(styles.display_container)}>
           <Flipper
             flipKey={dataSet.join("")}
@@ -565,8 +590,10 @@ export default class Algos extends Component {
             {displayData}
           </Flipper>
         </div>
-        <div>{algoButtons}</div>
+        <div className={css(styles.button_container)}>{algoButtons}</div>
       </div>
     );
   }
 }
+
+export default withTheme(Algos)
