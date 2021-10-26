@@ -435,7 +435,7 @@ class Algos extends Component {
       currentAlgoColor,
       _presentations,
     } = this.state;
-    const { theme } = this.props;
+    // const { theme } = this.props;
     const sorted = this.isSorted(dataSet);
 
     let displayData = [];
