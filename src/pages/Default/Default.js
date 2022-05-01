@@ -54,7 +54,7 @@ class Default extends Component {
         super(props);
         this.state = {
             drawerOpen: false,
-            version: 'v1.0.2'
+            version: 'v1.0.3'
         }
         this.toggleDrawer = this.toggleDrawer.bind(this);
     }
