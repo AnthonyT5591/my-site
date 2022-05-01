@@ -48,7 +48,7 @@ export default class Gallery extends Component {
     }
     renderGallery() {
         let temp = [];
-        if (this.state.gallery.length > 0) {
+        if (this.state.gallery?.length > 0) {
             this.state.gallery.forEach((c, i) => {
                 temp.push(
                     <img key={i}
@@ -58,6 +58,10 @@ export default class Gallery extends Component {
                         }} src={c.images.fixed_height_small.url} />
                 )
             })
+        } else {
+            temp.push(
+                <h2>Yikes! Someone was out late last night. Sorry!</h2>
+            )
         }
 
         return temp;
