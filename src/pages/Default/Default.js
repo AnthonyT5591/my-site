@@ -12,7 +12,7 @@ import Paper from '@mui/material/Paper';
 import { withTheme } from '@mui/styles';
 
 // import AccountBoxIcon from '@mui/icons-material/AccountBox';
-// import SportsEsportsIcon from '@mui/icons-material/SportsEsports';
+import SportsEsportsIcon from '@mui/icons-material/SportsEsports';
 import CollectionsIcon from '@mui/icons-material/Collections';
 import FunctionsIcon from '@mui/icons-material/Functions';
 import ContactMailIcon from "@mui/icons-material/ContactMail";
@@ -29,6 +29,10 @@ import {
     Redirect
 } from "react-router-dom";
 
+
+import { Component } from 'react';
+import { StyleSheet, css } from "aphrodite";
+
 // import About from '../About/About';
 // import Stats from '../Stats/Stats';
 import Socials from '../Socials/Socials';
@@ -36,18 +40,17 @@ import Vitals from '../Vitals/Vitals';
 import Algos from '../Algos/Algos'
 import DailySong from '../DailySong/DailySong';
 import Gallery from '../Gallery/Gallery';
-
-import { Component } from 'react';
-import { StyleSheet, css } from "aphrodite";
+import SplitCostsCalculator from '../SplitCostsCalculator/SplitCostsCalculator';
 
 
 const itemList = [ // 0 index will be default path for "/"
     // { Text: 'About Me', Icon: <AccountBoxIcon />, path: "/about" },
-    { Text: 'Socials', Icon: <ContactMailIcon color="primary" />, path: "/socials" },
+    { Text: 'Socials', Icon: <ContactMailIcon color="primary" />, path: "/socials", Component: <Socials /> },
     // { Text: 'Stats', Icon: <SportsEsportsIcon />, path: "/stats" },
-    { Text: 'Algo Visualizer', Icon: <FunctionsIcon color="primary" />, path: "/algos" },
+    { Text: 'Algo Visualizer', Icon: <FunctionsIcon color="primary" />, path: "/algos", Component: <Algos /> },
     // { Text: 'Daily Song', Icon: <SportsEsportsIcon color="primary" />, path: "/dailySong" }
-    { Text: 'Trending Gifs', Icon: <CollectionsIcon color="primary" />, path: "/gallery" }
+    { Text: 'Trending Gifs', Icon: <CollectionsIcon color="primary" />, path: "/gallery", Component: <Gallery /> },
+    { Text: 'Split Costs', Icon: <SportsEsportsIcon color="primary" />, path: "/splitCostsCalculator", Component: <SplitCostsCalculator /> }
 ];
 class Default extends Component {
     constructor(props) {
@@ -78,7 +81,7 @@ class Default extends Component {
                 [theme.breakpoints.down('lg')]: {
                     // height: `calc(${theme.spacing(10) + theme.spacing(itemList.length)} + 1px)`,
 
-                    height: `calc(${theme.spacing(10 * itemList.length)} + 1px)`,
+                    height: `${itemList.length * 75}px`,
                     width: "100%",
                 }
             },
@@ -176,27 +179,11 @@ class Default extends Component {
                             <Container maxWidth={false} disableGutters={true}>
                                 <div className="app-content">
                                     <Switch>
-                                        {/* <Route path="/stats">
-                                            <Stats />
-                                        </Route> */}
-                                        <Route path="/socials">
-                                            <Socials />
-                                        </Route>
-                                        {/* <Route path="/about">
-                                            <About />
-                                        </Route> */}
-                                        <Route path="/algos">
-                                            <Algos />
-                                        </Route>
-                                        <Route path="/gallery">
-                                            <Gallery />
-                                        </Route>
-                                        {/* <Route path="/dailySong">
-                                            <DailySong />
-                                        </Route> */}
-                                        <Route path="/vitals">
-                                            <Vitals />
-                                        </Route>
+                                        {itemList.map((c, i) =>
+                                        (<Route key={i} path={c.path}>
+                                            {c.Component}
+                                        </Route>)
+                                        )}
                                         <Route exact path="/">
                                             <Redirect to={itemList[0].path} />
                                         </Route>
