@@ -13,6 +13,7 @@ import { withTheme } from '@mui/styles';
 
 // import AccountBoxIcon from '@mui/icons-material/AccountBox';
 import SportsEsportsIcon from '@mui/icons-material/SportsEsports';
+import CalculateIcon from '@mui/icons-material/Calculate';
 import CollectionsIcon from '@mui/icons-material/Collections';
 import FunctionsIcon from '@mui/icons-material/Functions';
 import ContactMailIcon from "@mui/icons-material/ContactMail";
@@ -50,14 +51,14 @@ const itemList = [ // 0 index will be default path for "/"
     { Text: 'Algo Visualizer', Icon: <FunctionsIcon color="primary" />, path: "/algos", Component: <Algos /> },
     // { Text: 'Daily Song', Icon: <SportsEsportsIcon color="primary" />, path: "/dailySong" }
     { Text: 'Trending Gifs', Icon: <CollectionsIcon color="primary" />, path: "/gallery", Component: <Gallery /> },
-    { Text: 'Split Costs', Icon: <SportsEsportsIcon color="primary" />, path: "/splitCostsCalculator", Component: <SplitCostsCalculator /> }
+    { Text: 'Split Costs', Icon: <CalculateIcon color="primary" />, path: "/splitCostsCalculator", Component: <SplitCostsCalculator /> }
 ];
 class Default extends Component {
     constructor(props) {
         super(props);
         this.state = {
             drawerOpen: false,
-            version: 'v1.0.3'
+            version: 'v1.0.4'
         }
         this.toggleDrawer = this.toggleDrawer.bind(this);
     }

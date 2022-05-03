@@ -2,6 +2,7 @@ import './App.scss';
 import { Component } from 'react';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Default from './pages/Default/Default';
+import { green } from '@mui/material/colors';
 
 let theme = createTheme();
 theme = createTheme({
@@ -62,17 +63,19 @@ theme = createTheme({
         }
       }
     },
-    // MuiButton: {
-    //   styleOverrides: {
-    //     root: {
-    //       padding: "8px"
-    //     }
-    //   }
-    // },
     MuiListItem: {
       styleOverrides: {
         root: {
           justifyContent: "space-between"
+        }
+      }
+    },
+    MuiInputBase: {
+      styleOverrides: {
+        root: {
+          ":focus-within": {
+            color: green.A400
+          }
         }
       }
     }
